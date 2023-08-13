@@ -124,7 +124,7 @@ type ProductCardProps = {
 export const ProductCard = ({ product }: { product: ProductCardProps }) => {
   return (
     <Card>
-      <Link href="">
+      <Link href={`/product/${product.id}`}>
         <CardHeader className="p-0 ">
           <AspectRatio className="relative group" ratio={4 / 3}>
             <div className="absolute bottom-0 right-0 bg-black/60 w-full max-h-0 z-50 group-hover:max-h-[300px] overflow-hidden group-hover:h-auto transition-all duration-500 ease-in-out">

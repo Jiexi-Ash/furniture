@@ -23,10 +23,6 @@ function Products() {
     suspense: true,
   });
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <>
       <Suspense fallback={<ProductsLoading />}>

@@ -6,7 +6,7 @@ import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 
 function Navbar() {
   return (
-    <header className="py-6 border-b flex items-center py w-full  lg:max-w-[1336px] mx-auto container px-6 xl:px-0">
+    <header className="py-6 border-b flex items-center w-full  lg:max-w-[1336px] mx-auto container px-6 xl:px-0">
       <div className="w-full flex justify-between items-center">
         <div className="w-14 h-14 rounded-full bg-gray-200"></div>
         <NavLinks />

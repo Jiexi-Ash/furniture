@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { supabase } from "@/lib/supabaseServer";
+import supabaseServerComponentClient  from "@/lib/supabaseServer";
 
 
 
 export const GET = async (req:NextRequest) => {
+  const supabase = await supabaseServerComponentClient();
     try {
         const products = await prisma.product.findMany();
         // for each product, get the public url from supabase
