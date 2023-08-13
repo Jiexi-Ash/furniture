@@ -18,57 +18,73 @@ const products = [
     id: 1,
     name: "2 multicolred Chairs",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
   {
     id: 2,
     name: "L shaped Couch",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
   {
     id: 3,
     name: "2 Seater Couch",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/133919/pexels-photo-133919.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
   {
     id: 4,
     name: "Living room set",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/276528/pexels-photo-276528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
   {
     id: 5,
     name: "Grey kitchen table and chairs",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/358572/pexels-photo-358572.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
   {
     id: 6,
     name: "Chair",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/932095/pexels-photo-932095.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
   {
     id: 7,
     name: "L shaped Couch",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
   {
     id: 8,
     name: "Living room set",
     price: 200,
-    image:
+    primaryImage:
       "https://images.pexels.com/photos/276528/pexels-photo-276528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
   },
 ];
 
@@ -101,7 +117,8 @@ type ProductCardProps = {
   id: number;
   name: string;
   price: number;
-  image: string;
+  primaryImage: string;
+  description: string | null;
 };
 
 export const ProductCard = ({ product }: { product: ProductCardProps }) => {
@@ -109,8 +126,20 @@ export const ProductCard = ({ product }: { product: ProductCardProps }) => {
     <Card>
       <Link href="">
         <CardHeader className="p-0 ">
-          <AspectRatio ratio={4 / 3}>
-            <Image src={product.image} fill={true} alt="" objectFit="cover" />
+          <AspectRatio className="relative group" ratio={4 / 3}>
+            <div className="absolute bottom-0 right-0 bg-black/60 w-full max-h-0 z-50 group-hover:max-h-[300px] overflow-hidden group-hover:h-auto transition-all duration-500 ease-in-out">
+              <div className="w-full h-full flex flex-col">
+                <p className="text-white text-xs p-4 select-none">
+                  {product.description}
+                </p>
+              </div>
+            </div>
+            <Image
+              src={product.primaryImage}
+              fill={true}
+              alt=""
+              objectFit="cover"
+            />
           </AspectRatio>
         </CardHeader>
         <CardContent className="py-4">

@@ -38,7 +38,7 @@ export const NavLinks = () => {
           </Link>
         </li>
         <li>
-          <Link className="uppercase text-black" href="/">
+          <Link className="uppercase text-black" href="/products">
             Shop
           </Link>
         </li>
