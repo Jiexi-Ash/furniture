@@ -59,10 +59,11 @@ function Product({ id }: Props) {
                 type="number"
                 value={quantity}
                 className={cn("w-[300px]")}
+                readOnly
               />
 
               <Button className={cn("bg-primaryGreen text-white w-[300px]")}>
-                Add to car
+                Add to cart
               </Button>
             </div>
             <hr className="border-1 border-gray-200 w-full" />
