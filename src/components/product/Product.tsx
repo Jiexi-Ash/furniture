@@ -46,7 +46,7 @@ function Product({ id }: Props) {
         <div className="flex-1">
           <ProductImageCarousel images={images} options={{ loop: true }} />
         </div>
-        <div className="flex-1 h-full">
+        <div className="flex-1 h-full mt-10 lg:mt-0">
           <div className="w-full flex flex-col space-y-6">
             <div className="flex flex-col space-y-2">
               <h1 className="font-bold text-2xl text-black">{data?.name}</h1>

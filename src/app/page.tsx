@@ -12,7 +12,6 @@ export default function Home() {
       <PopularProducts />
       <Collections />
       <About />
-      <Footer />
     </main>
   );
 }

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Bars3Icon } from "@heroicons/react/24/solid";
@@ -6,6 +8,7 @@ import Link from "next/link";
 
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>

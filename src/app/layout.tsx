@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Merriweather } from "next/font/google";
 import Provider from "@/components/Provider";
+import Footer from "@/components/home/Footer";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
         <Provider>
           <Navbar />
           {children}
+          <Footer />
         </Provider>
       </body>
     </html>

@@ -1,10 +1,7 @@
-"use client";
 import React from "react";
 import Link from "next/link";
 
-import { Bars3Icon, ShoppingBagIcon } from "@heroicons/react/24/solid";
-import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import MobileNav from "./MobileNav";
 
 function Navbar() {

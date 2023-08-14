@@ -9,8 +9,6 @@ import useEmblaCarousel, {
 import { Button } from "../ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
-import Dots from "./Dots";
-import CarouselControls from "./CarouselControls";
 
 interface ProductImageCarouselProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -66,7 +64,7 @@ function ProductImageCarousel({ images, options }: ProductImageCarouselProps) {
       <div className="mt-[20px]">
         {images.length > 1 ? (
           <div className="w-full flex justify-center items-center gap-6">
-            <div className="w-full flex gap-6 justify-center items-center">
+            <div className="w-full flex gap-2 lg:gap-6 justify-center items-center">
               <Button
                 size="icon"
                 variant="outline"
@@ -81,7 +79,7 @@ function ProductImageCarousel({ images, options }: ProductImageCarouselProps) {
                   size="icon"
                   variant="outline"
                   className={cn(
-                    "group relative h-[100px] w-full max-w-[100px] rounded-none shadow-sm hover:bg-transparent"
+                    "group relative h-[50px] lg:h-[100px] w-full max-w-[100px] rounded-none shadow-sm hover:bg-transparent"
                   )}
                   onClick={() => emblaApi?.scrollTo(index)}
                 >
@@ -90,7 +88,7 @@ function ProductImageCarousel({ images, options }: ProductImageCarouselProps) {
                     fill
                     className="object-cover"
                     alt=""
-                    sizes="max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </Button>
               ))}
