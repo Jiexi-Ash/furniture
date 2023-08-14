@@ -1,6 +1,6 @@
 import About from "@/components/home/About";
 import Collections from "@/components/home/Collections";
-import Footer from "@/components/home/Footer";
+import Footer from "@/components/Footer";
 import Hero from "@/components/home/Hero";
 import PopularProducts from "@/components/home/PopularProducts";
 import Image from "next/image";

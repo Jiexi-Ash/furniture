@@ -12,7 +12,7 @@ function Footer() {
             provident.
           </p>
         </div>
-        <div className="w-full grid grid-cols-1 lg:grid-cols-3 text-center">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-3 text-center gap-6 lg:gap-0">
           <div className="flex flex-col">
             <div className="text-xl text-white">Infomation</div>
             <ul className="text-[#ccc] flex flex-col gap-2 text-sm mt-6">

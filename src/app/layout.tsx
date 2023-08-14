@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Merriweather } from "next/font/google";
 import Provider from "@/components/Provider";
-import Footer from "@/components/home/Footer";
+import Footer from "@/components/Footer";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
