@@ -2,21 +2,25 @@
 import React from "react";
 import Link from "next/link";
 
-import { ShoppingBagIcon } from "@heroicons/react/24/solid";
+import { Bars3Icon, ShoppingBagIcon } from "@heroicons/react/24/solid";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+import MobileNav from "./MobileNav";
 
 function Navbar() {
   return (
     <header className="py-6 border-b flex items-center w-full  lg:max-w-[1336px] mx-auto container px-6 xl:px-0">
       <div className="w-full flex justify-between items-center">
-        <div className="w-14 h-14 rounded-full bg-gray-200"></div>
+        <div className="w-14 h-14 rounded-full bg-gray-200 hidden lg:block"></div>
         <NavLinks />
 
+        <MobileNav />
+
         <div className="flex items-center space-x-4">
-          <ShoppingBagIcon className="h-8 w-8 text-gray-500" />
-          <div className="h-10 w-[1px] bg-gray-200"></div>
+          <ShoppingBagIcon className="w-6 h-6 lg:h-8 lg:w-8  text-gray-500" />
           <Link
             href="/sign-in"
-            className="bg-primaryGreen text-white max-w-max py-2 px-6 rounded-lg hover:bg-primaryGreen/80 transition-all duration-100 ease-in-out"
+            className="bg-primaryGreen text-xs lg:text-sm text-white max-w-max py-2 px-4 lg:px-6 rounded-lg hover:bg-primaryGreen/80 transition-all duration-100 ease-in-out"
           >
             SIGN IN
           </Link>
