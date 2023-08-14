@@ -28,8 +28,11 @@ function Products() {
       <Suspense fallback={<ProductsLoading />}>
         <div className="w-full py-6 flex flex-col bg-black">
           <div className=" flex flex-col  w-full  lg:max-w-[1336px] mx-auto container px-6 xl:px-0">
+            <h1 className="text-white font-bold text-2xl lg:hidden flex py-4">
+              Showcase
+            </h1>
             <div className="w-full flex  gap-6">
-              <div className="w-[60%] h-[400px]  grid grid-cols-3 gap-4">
+              <div className="w-full lg:w-[60%] h-[400px]  grid sm:grid-cols-1 lg:grid-cols-3 gap-4">
                 <div className="h-full w-full  relative">
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center items-end z-10">
                     <div className="absolute bottom-5 right-5 flex flex-col">
@@ -85,7 +88,7 @@ function Products() {
                   />
                 </div>
               </div>
-              <div className="w-[40%] h-[400px] flex justify-center flex-col gap-5">
+              <div className="w-[40%] h-[400px] gap-5 hidden lg:flex  justify-center lg:flex-col">
                 <h1 className="text-4xl text-white font-bold">Showcase</h1>
                 <p className="text-sm text-[#ccc] leading-5 tracking-wide">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
@@ -107,8 +110,8 @@ function Products() {
             </div>
           </div>
         </div>
-        <div className="flex min-h-screen flex-col px-4 lg:px-16 py-12 overflow-y-auto">
-          <div className="w-full grid grid-cols-4 gap-4 py-12">
+        <div className="flex min-h-screen flex-col px-4 lg:px-16 py-6 lg:py-12 overflow-y-auto">
+          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-4 py-12">
             {data?.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
