@@ -14,23 +14,25 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 
 type Props = {
-  id: string;
+  //   id: string;
+  data: Product;
 };
 
-function Product({ id }: Props) {
+function Product({ data }: Props) {
   const [quantity, setQuantity] = useState(1);
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["product", id],
-    queryFn: async () => {
-      const { data } = await axios.get(
-        `${process.env.DOMAIN_URL}/api/products/${id}`
-      );
-      return data as Product;
-    },
-    suspense: true,
-  });
 
-  if (!data) return <div className="">not found</div>;
+  //   const { data, error, isLoading } = useQuery({
+  //     queryKey: ["product", id],
+  //     queryFn: async () => {
+  //       const { data } = await axios.get(
+  //         `/api/products/${id}`
+  //       );
+  //       return data as Product;
+  //     },
+  //     suspense: true,
+  //   });
+
+  //   if (!data) return <div className="">not found</div>;
 
   //   get primaryImage, image1, image2, image3, image4, image5 from data
 

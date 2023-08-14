@@ -1,11 +1,19 @@
 import { Suspense, useEffect } from "react";
 import ProductsLoading from "./loading";
 import Products from "@/components/products/Products";
+import { prisma } from "@/lib/prisma";
+import axios from "axios";
+import { getProducts } from "../_actions/products";
 
-export default function ProductsPage() {
+const revalidate = 60;
+
+export default async function ProductsPage() {
+  const products = await getProducts();
   return (
     <main className="">
-      <Products />
+      <Suspense fallback={<ProductsLoading />}>
+        <Products data={products} />
+      </Suspense>
     </main>
   );
 }
