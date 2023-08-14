@@ -22,7 +22,9 @@ function Product({ id }: Props) {
   const { data, error, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/products/${id}`);
+      const { data } = await axios.get(
+        `${process.env.DOMAIN_URL}/api/products/${id}`
+      );
       return data as Product;
     },
     suspense: true,
