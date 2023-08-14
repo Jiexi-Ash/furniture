@@ -17,9 +17,7 @@ function Products() {
   const { data, error, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const { data } = await axios.get(
-        process.env.DOMAIN_URL + "/api/products"
-      );
+      const { data } = await axios.get("/api/products");
       return data as Product[];
     },
     suspense: true,
