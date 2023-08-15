@@ -12,6 +12,7 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
+import { useCartStore } from "@/app/(store)/cartStore";
 
 type Props = {
   //   id: string;
@@ -20,6 +21,7 @@ type Props = {
 
 function Product({ data }: Props) {
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCartStore();
 
   //   const { data, error, isLoading } = useQuery({
   //     queryKey: ["product", id],
@@ -64,7 +66,10 @@ function Product({ data }: Props) {
                 readOnly
               />
 
-              <Button className={cn("bg-primaryGreen text-white w-[300px]")}>
+              <Button
+                className={cn("bg-primaryGreen text-white w-[300px]")}
+                onClick={() => addToCart(data.id, quantity)}
+              >
                 Add to cart
               </Button>
             </div>

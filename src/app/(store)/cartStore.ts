@@ -27,7 +27,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
     addToCart: async (id, quantity) => {
         set({ isLoading: true });
         try {
-            const {data} = await axios.post('/api/cart', {id, quantity});
+            const {data} = await axios.get(`/api/products/${id}`);
 
             if (!data) throw new Error("Product not found");
 
