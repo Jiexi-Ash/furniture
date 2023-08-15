@@ -18,15 +18,6 @@ interface ProductsProps {
 }
 
 function Products({ data }: ProductsProps) {
-  // const { data, error, isLoading } = useQuery({
-  //   queryKey: ["products"],
-  //   queryFn: async () => {
-  //     const { data } = await axios.get("/api/products");
-  //     return data as Product[];
-  //   },
-  //   suspense: true,
-  // });
-
   return (
     <>
       <div className="w-full py-6 flex flex-col bg-black">
