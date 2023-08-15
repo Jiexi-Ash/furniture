@@ -24,7 +24,27 @@ export const useCartStore = create<CartStore>((set, get) => ({
     isLoading: false,
     cart: [],
     totalItems: 0,
-    addToCart: async (id, quantity) => {},
+    addToCart: async (id, quantity) => {
+        set({ isLoading: true });
+        try {
+            const {data} = await axios.post('/api/cart', {id, quantity});
+
+            if (!data) throw new Error("Product not found");
+
+            if (quantity > data.quantity) throw new Error("Not enough stock");
+
+            set((state) => {
+                const newCart = [...state.cart, {id, quantity}];
+                localStorage.setItem("cart", JSON.stringify(newCart));
+                return { cart: newCart, totalItems: newCart.length };
+            });
+        } catch (error) {
+            console.error(error);
+            throw new Error("Somthing went wrong, Please try again later");
+        } finally {
+            set({ isLoading: false });
+        }
+    },
     removeFromCart: (product) => {},
     clearCart: () => {},
     setCart: (cart) => {},
