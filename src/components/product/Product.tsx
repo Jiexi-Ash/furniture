@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import type { Product } from "@prisma/client";
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { useCartStore } from "@/app/(store)/cartStore";
+import AddToCartBtn from "../AddToCartBtn";
 
 type Props = {
   //   id: string;
@@ -66,12 +67,10 @@ function Product({ data }: Props) {
                 readOnly
               />
 
-              <Button
-                className={cn("bg-primaryGreen text-white w-[300px]")}
-                onClick={() => addToCart(data.id, quantity)}
-              >
-                Add to cart
-              </Button>
+              <AddToCartBtn
+                id={data?.id}
+                handleClick={() => addToCart(data.id, quantity)}
+              />
             </div>
             <hr className="border-1 border-gray-200 w-full" />
             <div className="flex w-full gap-4 flex-col">
