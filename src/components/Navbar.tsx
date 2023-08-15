@@ -7,8 +7,10 @@ import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import MobileNav from "./MobileNav";
 import { Badge } from "./ui/badge";
 import { useCartStore } from "@/app/(store)/cartStore";
+import useCart from "@/hooks/useCart";
 
 function Navbar() {
+  useCart();
   const { totalItems } = useCartStore();
   return (
     <header className="py-6 border-b flex items-center w-full  lg:max-w-[1336px] mx-auto container px-6 xl:px-0">

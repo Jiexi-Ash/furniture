@@ -2,7 +2,7 @@ import {create} from 'zustand';
 import axios from 'axios';
 import { Product } from '@prisma/client';
 
-type cartItem = {
+export type cartItem = {
     id: number;
     quantity: number;
 };
@@ -14,7 +14,7 @@ interface CartStore {
     addToCart: (id:number, quantity:number) => void;
     removeFromCart: (product: any) => void;
     clearCart: () => void;
-    setCart: (cart: Product[]) => void;
+    setCart: (cart: cartItem[]) => void;
     increaseQuantity: (id: number) => void;
     decreaseQuantity: (id: number) => void;
     checkout: () => void;
@@ -47,7 +47,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
     },
     removeFromCart: (product) => {},
     clearCart: () => {},
-    setCart: (cart) => {},
+    setCart: (cart) => set((state) => ({ cart, totalItems: cart.length })),
     increaseQuantity: (id) => {},
     decreaseQuantity: (id) => {},
     checkout: () => {},
