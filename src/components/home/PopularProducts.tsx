@@ -91,7 +91,7 @@ const products = [
 function PopularProducts() {
   return (
     <div className=" mt-[40px] lg:mt-20 flex w-full  lg:max-w-[1336px] mx-auto container px-4 xl:px-0 flex-col">
-      <h2 className="text-black text-2xl lg:text-4xl font-bold">
+      <h2 className="text-black text-2xl lg:text-4xl font-bold bg-gradient-to-b from-[#194c33] to-black text-transparent bg-clip-text select-none">
         Our Popular Products
       </h2>
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

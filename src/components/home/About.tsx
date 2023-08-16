@@ -4,7 +4,9 @@ import React from "react";
 function About() {
   return (
     <div className=" mt-[40px] lg:mt-20 flex py w-full  lg:max-w-[1336px] mx-auto container px-6 xl:px-0 flex-col">
-      <h2 className="text-black text-2xl lg:text-4xl font-bold">About Us</h2>
+      <h2 className="text-black text-2xl lg:text-4xl font-bold bg-gradient-to-b from-[#194c33] to-black text-transparent bg-clip-text select-none">
+        About Us
+      </h2>
       <div className="flex flex-col space-y-6">
         <div className="w-full h-[400px] relative mt-10">
           <Image
