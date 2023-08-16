@@ -21,7 +21,7 @@ function About() {
           your home to suit your needs.
           <br />
           <br />
-          Established in 2019 l, Willow Interior Designs was founded to help
+          Established in 2019, Willow Interior Designs was founded to help
           individuals and families find pieces suitable for their unique living
           space by offering a range of high quality and modern products at
           reasonable prices. We only select top quality products from
