@@ -12,10 +12,18 @@ function Collections() {
       </h2>
       <div className="w-full">
         <ul className="mt-10 flex gap-6 justify-center">
-          <li className="text-black ">Kitchen room</li>
-          <li className="text-black font-bold">Living room</li>
-          <li className="text-black">Dining room</li>
-          <li className="text-black">Bedroom</li>
+          <li className="text-black  text-sm text-center lg:text-left flex">
+            Kitchen <span className="hidden lg:block lg:ml-1">room</span>
+          </li>
+          <li className="text-black  text-sm text-center lg:text-left flex">
+            Living <span className="hidden lg:block lg:ml-1">room</span>
+          </li>
+          <li className="text-black  text-sm text-center lg:text-left flex">
+            Dining <span className="hidden lg:block lg:ml-1">room</span>
+          </li>
+          <li className="text-black  text-sm text-center lg:text-left flex">
+            Bedroom
+          </li>
         </ul>
       </div>
       <div className="mt-10 lg:max-h-[550px] w-full flex flex-col lg:flex-row lg:gap-10 ">
