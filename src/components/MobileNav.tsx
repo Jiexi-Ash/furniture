@@ -6,6 +6,15 @@ import { Button } from "./ui/button";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
+import { navData } from "@/config/site";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,23 +29,50 @@ function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
-        <ul className="px-2 flex flex-col mt-10 space-y-4 w-full">
-          <Link className="border-b border-gray-200 py-2" href="/">
-            Home
-          </Link>
-          <Link className="border-b border-gray-200 py-2" href="/products">
-            Shop
-          </Link>
-          <Link className="border-b border-gray-200 py-2" href="/">
-            About
-          </Link>
-          <Link className="border-b border-gray-200 py-2" href="/">
-            About
-          </Link>
-        </ul>
+        {/* change to logo */}
+        <Link
+          className="text-sm mt-4"
+          href="/"
+          onClick={() => setIsOpen(false)}
+        >
+          Home
+        </Link>
+        <NavLinks onClick={() => setIsOpen(false)} />
       </SheetContent>
     </Sheet>
   );
 }
 
 export default MobileNav;
+
+type NavLinksProps = {
+  onClick?: () => void;
+};
+
+const NavLinks = ({ onClick }: NavLinksProps) => {
+  return (
+    <Accordion className="mt-6" type="single" collapsible>
+      {navData.map((item, index) => (
+        <AccordionItem value={item.title} key={index}>
+          <AccordionTrigger className="text-sm capitalize">
+            {item.title}
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="flex flex-col space-y-2">
+              {item.items.map((subItem, index) => (
+                <Link
+                  className="text-[12px] capitalize"
+                  href={subItem.href}
+                  key={index}
+                  onClick={onClick}
+                >
+                  {subItem.title}
+                </Link>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  );
+};

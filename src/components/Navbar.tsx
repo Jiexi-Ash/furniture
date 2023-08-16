@@ -8,6 +8,7 @@ import MobileNav from "./MobileNav";
 import { Badge } from "./ui/badge";
 import { useCartStore } from "@/app/(store)/cartStore";
 import useCart from "@/hooks/useCart";
+import NavMenu from "./layout/NavMenu";
 
 function Navbar() {
   useCart();
@@ -16,7 +17,7 @@ function Navbar() {
     <header className="py-6 border-b flex items-center w-full  lg:max-w-[1336px] mx-auto container px-6 xl:px-0">
       <div className="w-full flex justify-between items-center">
         <div className="w-14 h-14 rounded-full bg-gray-200 hidden lg:block"></div>
-        <NavLinks />
+        <NavMenu />
 
         <MobileNav />
 
