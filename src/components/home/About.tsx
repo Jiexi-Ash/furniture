@@ -15,25 +15,21 @@ function About() {
           />
         </div>
         <p className="text-sm text-black">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque
-          praesentium numquam cupiditate animi aperiam esse tempora velit
-          accusamus, maiores sed veniam saepe doloremque reprehenderit, quisquam
-          atque id, similique quaerat unde. Blanditiis distinctio corrupti
-          aliquam laudantium, iusto aut laborum quo id magnam velit?
+          At Willow Interior Designs, we believe that your home should be as
+          modern as you are. As such, we have searched far and wide to curate
+          the most expertly stylish furniture and decor items for every room in
+          your home to suit your needs.
           <br />
           <br />
-          Reprehenderit, quis nostrum! Rem, at ex, voluptate dolorem sit quod,
-          culpa commodi inventore alias a enim nostrum rerum! Maxime placeat
-          nisi nam labore dolorem odit nemo nesciunt ducimus! Consequatur optio
-          animi unde, neque eaque quia magni. Quis non et totam assumenda ex
-          delectus fugit, veniam consectetur numquam earum! Ea consequatur
+          Established in 2019 l, Willow Interior Designs was founded to help
+          individuals and families find pieces suitable for their unique living
+          space by offering a range of high quality and modern products at
+          reasonable prices. We only select top quality products from
+          international and local manufacturers.
           <br />
           <br />
-          Reprehenderit, quis nostrum! Rem, at ex, voluptate dolorem sit quod,
-          culpa commodi inventore alias a enim nostrum rerum! Maxime placeat
-          nisi nam labore dolorem odit nemo nesciunt ducimus! Consequatur optio
-          animi unde, neque eaque quia magni. Quis non et totam assumenda ex
-          delectus fugit, veniam consectetur numquam earum! Ea consequatur
+          Our aim is to offer high-end quality, style and elegance while
+          offering our clients a brilliant shopping experience.
         </p>
       </div>
     </div>
