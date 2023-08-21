@@ -43,7 +43,7 @@ export default async function UserCart() {
           <ShoppingBagIcon className="w-6 h-6 lg:h-8 lg:w-8  text-gray-500" />
         </Button>
       </SheetTrigger>
-      <SheetContent className=" flex flex-col w-[800px]" side="right">
+      <SheetContent className=" flex flex-col w-full lg:w-[800px]" side="right">
         <SheetHeader>
           <SheetTitle className="text-2xl">My Cart</SheetTitle>
           <SheetDescription>{cartItemsCount} items</SheetDescription>
