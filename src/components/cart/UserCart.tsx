@@ -53,7 +53,7 @@ export default async function UserCart() {
           <ScrollArea className="h-full">
             <div className="flex flex-col space-y-4">
               {cart.map((item) => (
-                <CartItem key={item.id} {...item} />
+                <CartItem key={item.id} {...item} itemId={item.itemId} />
               ))}
             </div>
           </ScrollArea>

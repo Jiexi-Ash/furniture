@@ -11,5 +11,6 @@ export type mainNavItem = NavItem & {
 
 export interface CartItems extends Pick<Product, 'id' | 'name' | 'price' | 'quantity' | 'primaryImage'> {
     userQuantity?: number;
+    itemId?: number;
 
 }

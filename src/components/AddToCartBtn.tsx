@@ -8,9 +8,8 @@ import { addToCart } from "@/app/_actions/cart";
 type AddToCartBtnProps = {
   id: number;
   quantity: number;
-  handleClick: () => void;
 };
-function AddToCartBtn({ id, handleClick, quantity }: AddToCartBtnProps) {
+function AddToCartBtn({ id, quantity }: AddToCartBtnProps) {
   const [isPending, startTransition] = useTransition();
   const [title, setTitle] = useState("Add to cart");
 
