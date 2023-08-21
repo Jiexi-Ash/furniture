@@ -19,6 +19,7 @@ export const getProducts = async () => {
         }
         )
     );
+    console.log(productsWithImages);
 
     return productsWithImages;
 };

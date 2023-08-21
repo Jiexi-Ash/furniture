@@ -12,7 +12,7 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { useCartStore } from "@/app/(store)/cartStore";
+
 import AddToCartBtn from "../AddToCartBtn";
 
 type Props = {
@@ -21,7 +21,6 @@ type Props = {
 
 function Product({ data }: Props) {
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCartStore();
 
   const images = [
     data.primaryImage,
@@ -51,10 +50,7 @@ function Product({ data }: Props) {
                 readOnly
               />
 
-              <AddToCartBtn
-                id={data?.id}
-                handleClick={() => addToCart(data.id, quantity)}
-              />
+              <AddToCartBtn id={data?.id} quantity={quantity} />
             </div>
             <hr className="border-1 border-gray-200 w-full" />
             <div className="flex w-full gap-4 flex-col">
