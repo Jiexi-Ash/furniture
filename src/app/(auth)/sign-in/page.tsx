@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { supabase } from "@/lib/supabaseClient";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -26,6 +27,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignInPage() {
+  const [error, setError] = useState("");
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,10 +40,17 @@ export default function SignInPage() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const { email, password } = data;
 
-    await supabase.auth.signInWithPassword({
+    const { data: userData, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    if (error) {
+      console.log(error);
+      setError("Invalid credentials");
+      return;
+    }
+    setError("");
     router.push("/");
   };
 
@@ -52,7 +61,7 @@ export default function SignInPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 max-w-sm"
+            className="space-y-4 max-w-sm"
           >
             <FormField
               control={form.control}
@@ -84,13 +93,20 @@ export default function SignInPage() {
                 </FormItem>
               )}
             />
+            <div className="flex flex-col space-y-2">
+              {error && (
+                <p className="text-sm text-red-500 w-full text-center">
+                  {error}
+                </p>
+              )}
 
-            <Button
-              type="submit"
-              className="bg-primaryGreen text-white w-full hover:bg-primaryGreen/60"
-            >
-              Sign In
-            </Button>
+              <Button
+                type="submit"
+                className="bg-primaryGreen text-white w-full hover:bg-primaryGreen/60"
+              >
+                Sign In
+              </Button>
+            </div>
           </form>
         </Form>
       </div>
