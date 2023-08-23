@@ -4,6 +4,8 @@ import Link from "next/link";
 import MobileNav from "./MobileNav";
 import NavMenu from "./layout/NavMenu";
 import UserCart from "./cart/UserCart";
+import { useUserStore } from "@/app/(store)/userStore";
+import Account from "./Account";
 
 function Navbar() {
   return (
@@ -14,14 +16,9 @@ function Navbar() {
 
         <MobileNav />
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 justify-between">
           <UserCart />
-          <Link
-            href="/sign-in"
-            className="bg-primaryGreen text-xs lg:text-sm text-white max-w-max py-2 px-4 lg:px-6 rounded-lg hover:bg-primaryGreen/80 transition-all duration-100 ease-in-out"
-          >
-            SIGN IN
-          </Link>
+          <Account />
         </div>
       </div>
     </header>

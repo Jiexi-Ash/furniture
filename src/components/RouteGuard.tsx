@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import { useUserStore } from "@/app/(store)/userStore";
 import { supabase } from "@/lib/supabaseClient";
@@ -16,6 +17,7 @@ function RouteGuard({ children }: props) {
         data: { session },
         error,
       } = await supabase.auth.getSession();
+      console.log(session);
       if (error) throw error;
 
       if (session) {

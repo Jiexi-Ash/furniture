@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Merriweather } from "next/font/google";
 import Provider from "@/components/Provider";
 import Footer from "@/components/Footer";
+import RouteGuard from "@/components/RouteGuard";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -24,9 +25,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={merriweather.className}>
         <Provider>
-          <Navbar />
-          {children}
-          <Footer />
+          <RouteGuard>
+            <Navbar />
+            {children}
+            <Footer />
+          </RouteGuard>
         </Provider>
       </body>
     </html>
