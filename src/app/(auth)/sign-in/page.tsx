@@ -47,7 +47,7 @@ export default function SignInPage() {
 
   return (
     <div className="mt-8 justify-center w-full flex min-h-[55vh] items-center">
-      <div className="max-w-sm  max-h-[400px] flex flex-col w-full shadow-sm border border-gray-200 bg-white px-6 py-8">
+      <div className="max-w-sm  max-h-[400px] flex flex-col w-full shadow-sm border border-gray-200 bg-white px-6 py-8 mx-6 lg:mx-0">
         <h1 className="text-lg font-bold py-2">Sign In</h1>
         <Form {...form}>
           <form
