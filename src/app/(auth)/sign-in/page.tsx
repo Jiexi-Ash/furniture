@@ -18,6 +18,7 @@ import {
 import { useForm } from "react-hook-form";
 import { supabase } from "@/lib/supabaseClient";
 import { useState } from "react";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -94,6 +95,10 @@ export default function SignInPage() {
               )}
             />
             <div className="flex flex-col space-y-2">
+              <Link
+                href="/sign-up"
+                className="text-xs text-primaryGreen text-center hover:underline"
+              >{`Don't have an account? Sign Up`}</Link>
               {error && (
                 <p className="text-sm text-red-500 w-full text-center">
                   {error}

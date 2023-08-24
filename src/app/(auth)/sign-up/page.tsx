@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { supabase } from "@/lib/supabaseClient";
+import Link from "next/link";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -26,6 +28,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignUp() {
+  const [error, setError] = useState("");
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,14 +41,19 @@ export default function SignUp() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const { email, password } = data;
 
-    await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
-    router.push("/");
+    if (error) {
+      console.log(error);
+      setError("Something went wrong, please try again");
+      return;
+    }
+    setError("");
   };
 
   return (
@@ -55,7 +63,7 @@ export default function SignUp() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 max-w-sm"
+            className="space-y-4 max-w-sm"
           >
             <FormField
               control={form.control}
@@ -88,12 +96,24 @@ export default function SignUp() {
               )}
             />
 
-            <Button
-              type="submit"
-              className="bg-primaryGreen text-white w-full hover:bg-primaryGreen/60"
-            >
-              Sign Up
-            </Button>
+            <div className="flex flex-col space-y-2">
+              <Link
+                href="/sign-in"
+                className="text-xs text-primaryGreen text-center hover:underline"
+              >{`Already have an account? Sign In`}</Link>
+              {error && (
+                <p className="text-sm text-red-500 w-full text-center">
+                  {error}
+                </p>
+              )}
+
+              <Button
+                type="submit"
+                className="bg-primaryGreen text-white w-full hover:bg-primaryGreen/60"
+              >
+                Sign Up
+              </Button>
+            </div>
           </form>
         </Form>
       </div>
