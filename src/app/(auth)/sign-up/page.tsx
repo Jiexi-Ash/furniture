@@ -20,6 +20,8 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useToast } from "@/components/ui/use-toast";
+
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
@@ -28,7 +30,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignUp() {
-  const [error, setError] = useState("");
+  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,10 +52,15 @@ export default function SignUp() {
     });
     if (error) {
       console.log(error);
-      setError("Something went wrong, please try again");
+      toast({
+        variant: "destructive",
+        description: "Something went wrong, please try again",
+      });
       return;
     }
-    setError("");
+    toast({
+      description: "Check your email for the confirmation link",
+    });
   };
 
   return (
@@ -101,12 +108,6 @@ export default function SignUp() {
                 href="/sign-in"
                 className="text-xs text-primaryGreen text-center hover:underline"
               >{`Already have an account? Sign In`}</Link>
-              {error && (
-                <p className="text-sm text-red-500 w-full text-center">
-                  {error}
-                </p>
-              )}
-
               <Button
                 type="submit"
                 className="bg-primaryGreen text-white w-full hover:bg-primaryGreen/60"

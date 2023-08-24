@@ -20,6 +20,8 @@ import { supabase } from "@/lib/supabaseClient";
 import { useState } from "react";
 import Link from "next/link";
 
+import { useToast } from "@/components/ui/use-toast";
+
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
@@ -28,7 +30,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignInPage() {
-  const [error, setError] = useState("");
+  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,11 +49,12 @@ export default function SignInPage() {
     });
 
     if (error) {
-      console.log(error);
-      setError("Invalid credentials");
+      toast({
+        variant: "destructive",
+        description: "Invalid email or password",
+      });
       return;
     }
-    setError("");
     router.push("/");
   };
 
@@ -99,11 +102,6 @@ export default function SignInPage() {
                 href="/sign-up"
                 className="text-xs text-primaryGreen text-center hover:underline"
               >{`Don't have an account? Sign Up`}</Link>
-              {error && (
-                <p className="text-sm text-red-500 w-full text-center">
-                  {error}
-                </p>
-              )}
 
               <Button
                 type="submit"

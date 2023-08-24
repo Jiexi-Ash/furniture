@@ -5,6 +5,7 @@ import { Merriweather } from "next/font/google";
 import Provider from "@/components/Provider";
 import Footer from "@/components/Footer";
 import RouteGuard from "@/components/RouteGuard";
+import { Toaster } from "@/components/ui/toaster";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
           <RouteGuard>
             <Navbar />
             {children}
+            <Toaster />
             <Footer />
           </RouteGuard>
         </Provider>
