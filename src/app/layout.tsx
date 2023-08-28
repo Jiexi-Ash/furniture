@@ -27,10 +27,8 @@ export default function RootLayout({
       <body className={merriweather.className}>
         <Provider>
           <RouteGuard>
-            <Navbar />
             {children}
             <Toaster />
-            <Footer />
           </RouteGuard>
         </Provider>
       </body>

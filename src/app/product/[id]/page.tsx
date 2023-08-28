@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import Product from "@/components/product/Product";
 import { prisma } from "@/lib/prisma";
 import supabaseServerComponentClient from "@/lib/supabaseServer";
+import MainLayout from "@/components/layout/MainLayout";
 
 interface Props {
   params: {
@@ -30,8 +31,10 @@ export default async function ProductPage({ params }: Props) {
     primaryImage: data.publicUrl,
   };
   return (
-    <div className="flex flex-col  items-center py-12 w-full lg:max-w-[1336px] mx-auto container px-6 xl:px-0">
-      <Product data={productData} />
-    </div>
+    <MainLayout>
+      <div className="flex flex-col  items-center py-12 w-full lg:max-w-[1336px] mx-auto container px-6 xl:px-0">
+        <Product data={productData} />
+      </div>
+    </MainLayout>
   );
 }
