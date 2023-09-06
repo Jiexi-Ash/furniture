@@ -4,7 +4,6 @@ import Link from "next/link";
 import MobileNav from "./MobileNav";
 import NavMenu from "./layout/NavMenu";
 import UserCart from "./cart/UserCart";
-import { useUserStore } from "@/app/(store)/userStore";
 import Account from "./Account";
 
 function Navbar() {

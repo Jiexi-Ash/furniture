@@ -17,7 +17,6 @@ function RouteGuard({ children }: props) {
         data: { session },
         error,
       } = await supabase.auth.getSession();
-      console.log(session);
       if (error) throw error;
 
       if (session) {

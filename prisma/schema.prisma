@@ -7,19 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
-  id        Int       @id @default(autoincrement())
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime
-  Product   Product[]
-}
-
 model Order {
   id        Int         @id @default(autoincrement())
   userId    String
   createdAt DateTime    @default(now())
-  updatedAt DateTime
+  updatedAt DateTime    @updatedAt
   orderDate DateTime    @default(now())
   total     Float       @default(0)
   status    OrderStatus @default(PENDING)
@@ -31,7 +23,7 @@ model Order {
 model OrderItem {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   orderId   Int
   productId Int
   quantity  Int
@@ -41,23 +33,30 @@ model OrderItem {
 }
 
 model Product {
-  id           Int         @id @default(autoincrement())
-  name         String
-  description  String?
-  features     String
-  price        Float
-  quantity     Int
-  primaryImage String
-  image2       String?
-  image3       String?
-  image4       String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime
-  dimensions   String
-  categoryId   Int?
-  OrderItem    OrderItem[]
-  Category     Category?   @relation(fields: [categoryId], references: [id])
-  CartItem     CartItem[]
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  features    String
+  price       Float
+  quantity    Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  dimensions  String
+  categoryId  Int?
+  OrderItem   OrderItem[]
+  Category    Category?   @relation(fields: [categoryId], references: [id])
+  CartItem    CartItem[]
+  isActive    Boolean     @default(false)
+  Image       Image[]
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  productId Int
+  url       String
+  Product   Product  @relation(fields: [productId], references: [id])
 }
 
 model User {
@@ -65,7 +64,7 @@ model User {
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   userId    String   @unique
 
   @@index([userId], map: "userId")
@@ -81,12 +80,20 @@ model Cart {
 model CartItem {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   cartId    String
   productId Int
   quantity  Int
   Cart      Cart     @relation(fields: [cartId], references: [id])
   Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Product   Product[]
 }
 
 enum OrderStatus {

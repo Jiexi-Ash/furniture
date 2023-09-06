@@ -14,25 +14,20 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 
 import AddToCartBtn from "../AddToCartBtn";
+import { ProductItems } from "@/types";
 
-type Props = {
-  data: Product;
-};
+interface Props {
+  data: ProductItems;
+}
 
 function Product({ data }: Props) {
   const [quantity, setQuantity] = useState(1);
 
-  const images = [
-    data.primaryImage,
-    "https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1692&q=80",
-    "https://images.unsplash.com/photo-1599008633587-95b5da16d29f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    "https://images.unsplash.com/photo-1588471980726-8346cb477a33?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1670&q=80",
-  ];
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="w-full  min-h-screen flex flex-col lg:flex-row lg:gap-10">
         <div className="flex-1">
-          <ProductImageCarousel images={images} options={{ loop: true }} />
+          <ProductImageCarousel images={data.images} options={{ loop: true }} />
         </div>
         <div className="flex-1 h-full mt-10 lg:mt-0">
           <div className="w-full flex flex-col space-y-6">

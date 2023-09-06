@@ -17,18 +17,20 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Minus, Plus, Trash } from "lucide-react";
 import { CartItems } from "@/types";
+
 import {
   deleteCartItem,
   incrementCartItem,
   decreaseCartItem,
 } from "@/app/_actions/cart";
+
 function CartItem({
   id,
   quantity,
   userQuantity,
   name,
   price,
-  primaryImage,
+  images,
   itemId,
 }: CartItems) {
   const [isPending, startTransition] = useTransition();
@@ -36,7 +38,7 @@ function CartItem({
     <div className="flex space-x-4 items-center">
       <div className="w-24 h-24  relative rouneded-lg">
         <Image
-          src={primaryImage}
+          src={images[0].url}
           alt=""
           fill
           className="object-cover rounded-lg"

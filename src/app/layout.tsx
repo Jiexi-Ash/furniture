@@ -25,12 +25,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={merriweather.className}>
-        <Provider>
-          <RouteGuard>
-            {children}
-            <Toaster />
-          </RouteGuard>
-        </Provider>
+        {children}
+        <Toaster />
       </body>
     </html>
   );

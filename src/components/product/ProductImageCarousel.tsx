@@ -9,10 +9,11 @@ import useEmblaCarousel, {
 import { Button } from "../ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
+import type { Image as Images } from "@prisma/client";
 
 interface ProductImageCarouselProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
-  images: string[];
+  images: Images[];
   options?: EmblaOptionsType;
 }
 
@@ -55,7 +56,7 @@ function ProductImageCarousel({ images, options }: ProductImageCarouselProps) {
               key={index}
             >
               <AspectRatio ratio={1}>
-                <Image src={image} fill className="object-cover" alt="" />
+                <Image src={image.url} fill className="object-cover" alt="" />
               </AspectRatio>
             </div>
           ))}
@@ -84,7 +85,7 @@ function ProductImageCarousel({ images, options }: ProductImageCarouselProps) {
                   onClick={() => emblaApi?.scrollTo(index)}
                 >
                   <Image
-                    src={image}
+                    src={image.url}
                     fill
                     className="object-cover"
                     alt=""

@@ -1,20 +1,14 @@
 "use client";
-import { Suspense, useEffect } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import ProductsLoading from "@/app/products/loading";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { AspectRatio } from "../ui/aspect-ratio";
-import { PhotoIcon } from "@heroicons/react/24/solid";
-import { Skeleton } from "../ui/skeleton";
-import { ProductCard } from "../home/PopularProducts";
 
 import type { Product } from "@prisma/client";
+import { ProductItems } from "@/types";
+import ProductCard from "../product/ProductCard";
 
 interface ProductsProps {
-  data: Product[];
+  data: ProductItems[];
 }
 
 function Products({ data }: ProductsProps) {

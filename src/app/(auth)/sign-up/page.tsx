@@ -51,7 +51,6 @@ export default function SignUp() {
       },
     });
     if (error) {
-      console.log(error);
       toast({
         variant: "destructive",
         description: "Something went wrong, please try again",

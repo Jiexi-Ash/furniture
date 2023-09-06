@@ -109,7 +109,6 @@ export const addToCart = async (
 };
 
 export async function getCartItems(): Promise<CartItems[]> {
-  const supabase = await supabaseServerComponentClient();
   const cookieList = cookies();
 
   const cartId = cookieList.get("cartId")?.value;
@@ -125,7 +124,11 @@ export async function getCartItems(): Promise<CartItems[]> {
     include: {
       items: {
         include: {
-          Product: true,
+          Product: {
+            include: {
+              Image: true,
+            },
+          },
         },
       },
     },
@@ -133,28 +136,15 @@ export async function getCartItems(): Promise<CartItems[]> {
 
   if (!cart) return [];
 
-  const cartItemsWithImage = await Promise.all(
-    cart.items.map(async (item) => {
-      const { data } = supabase.storage
-        .from("products")
-        .getPublicUrl(item.Product.primaryImage);
-
-      return {
-        ...item,
-        Product: { ...item.Product, primaryImage: data.publicUrl },
-      };
-    })
-  );
-
   //  get product and quantity
-  const cartItems = cartItemsWithImage.map((item) => ({
+  const cartItems = cart.items.map((item) => ({
     itemId: item.id,
     id: item.Product.id,
     userQuantity: item.quantity,
     quantity: item.Product.quantity,
     name: item.Product.name,
     price: item.Product.price,
-    primaryImage: item.Product.primaryImage,
+    images: item.Product.Image,
   }));
 
   return cartItems;
