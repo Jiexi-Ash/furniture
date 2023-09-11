@@ -6,9 +6,9 @@ function Footer() {
   return (
     <div className="mt-20 flex w-full bg-black h-full lg:h-[200px] px-6 lg:px-0 pb-20">
       <div className="w-full container mx-auto flex max-w-[1336px] pt-10 gap-7 flex-col lg:flex-row">
-        <div className="text-white max-w-lg w-full flex flex-col gap-6 text-center lg:text-left">
+        <div className="text-white w-full flex flex-col items-center  gap-7 justify-center lg:items-start">
           <div className="text-xl font-bold">Willow Interior Designs</div>
-          <p className="text-[#ccc] text-xs lg:text-sm ">
+          <p className="text-[#ccc] text-xs text-center lg:text-sm lg:text-left">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit
             quaerat velit veritatis inventore, nihil repellendus sapiente
             provident.
@@ -18,17 +18,20 @@ function Footer() {
           <div className="flex flex-col">
             <div className="text-xl text-white">Infomation</div>
             <ul className="text-[#ccc] flex flex-col gap-2 text-sm mt-6">
-              <li>Shipping</li>
-              <li>Return</li>
-              <li>Privacy Policy</li>
+              <li>
+                <Link href="/information/delivery">Delivery</Link>
+              </li>
+              <li>
+                <Link href="/information/returns">Returns</Link>
+              </li>
             </ul>
           </div>
           <div className="flex flex-col">
             <div className="text-xl text-white">Policies</div>
             <ul className="text-[#ccc] flex flex-col gap-2 text-sm mt-6">
-              <li>Terms & conditions</li>
-              <li>Return Policy</li>
-              <li>Privacy Policy</li>
+              <li>
+                <Link href="/terms-and-conditions">Terms and Conditions</Link>
+              </li>
             </ul>
           </div>
           <div className="flex flex-col">

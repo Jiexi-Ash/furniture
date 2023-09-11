@@ -104,3 +104,22 @@ export const navData = [
       ],
     },
   ] satisfies mainNavItem[];
+
+
+  export const termsAndConditions = [
+    {
+      title: "General",
+    },
+    {
+      title: "Use of the Website",
+    },
+    {
+      title: "Delivery",
+    },
+    {
+      title: "Cancellations",
+    },
+    {
+      title: "Returns",
+    },
+  ]
