@@ -63,6 +63,9 @@ function AddProduct() {
     startTransition(async () => {
       try {
         await addProduct(values);
+        toast({
+          description: "Product added successfully",
+        });
       } catch (error) {
         toast({
           variant: "destructive",
