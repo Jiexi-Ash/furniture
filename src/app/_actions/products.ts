@@ -1,6 +1,6 @@
 "use server"
 
-import {prisma} from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import supabaseServerComponentClient from "@/lib/supabaseServer";
 import { addProductSchema, updateProductSchema } from "@/lib/validations";
 import { ProductItems } from "@/types";
@@ -11,59 +11,59 @@ import * as z from "zod";
 
 
 export const getProducts = async (): Promise<ProductItems[]> => {
-    const supabaseServer = await supabaseServerComponentClient();
-    const products = await prisma.product.findMany({
-      where: {
-        isActive: true,
-      },
-        include: {
-            Image: true,
-            Category: true
-        },
-       
-    });
-    
+  const supabaseServer = await supabaseServerComponentClient();
+  const products = await prisma.product.findMany({
+    where: {
+      isActive: true,
+    },
+    include: {
+      Image: true,
+      Category: true
+    },
 
-    const productItems = products.map((product) => {
-        return {
-            id: product.id,
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            features: product.features,
-            dimensions: product.dimensions,
-            quantity: product.quantity,
-            isActive: product.isActive,
-            category: {name: product.Category?.name as string, id: product.Category?.id as number},
-            images: product.Image,
-        }
-    });
-    return productItems
+  });
+
+
+  const productItems = products.map((product) => {
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      features: product.features,
+      dimensions: product.dimensions,
+      quantity: product.quantity,
+      isActive: product.isActive,
+      category: { name: product.Category?.name as string, id: product.Category?.id as number },
+      images: product.Image,
+    }
+  });
+  return productItems
 };
 
 export const getAllProducts = async (): Promise<ProductItems[]> => {
   const products = await prisma.product.findMany({
-      include: {
-          Image: true,
-          Category: true
-      },
-     
+    include: {
+      Image: true,
+      Category: true
+    },
+
   });
-  
+
 
   const productItems = products.map((product) => {
-      return {
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          features: product.features,
-          dimensions: product.dimensions,
-          quantity: product.quantity,
-          isActive: product.isActive,
-          category: {name: product.Category?.name as string, id: product.Category?.id as number},
-          images: product.Image,
-      }
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      features: product.features,
+      dimensions: product.dimensions,
+      quantity: product.quantity,
+      isActive: product.isActive,
+      category: { name: product.Category?.name as string, id: product.Category?.id as number },
+      images: product.Image,
+    }
   });
   return productItems
 };
@@ -72,85 +72,131 @@ export const getProduct = async (id: number): Promise<ProductItems> => {
   if (!id || isNaN(id)) {
     throw new Error("Could not find product");
   }
-  
+
   const product = await prisma.product.findUnique({
-        where: {
-            id: id,
-            isActive: true,
-            
-        },
-        include: {
-            Image: true,
-            Category: true
-        },
-       
-    });
+    where: {
+      id: id,
+      isActive: true,
 
-    if (!product) {
-        throw new Error("Product not found");
-    }
+    },
+    include: {
+      Image: true,
+      Category: true
+    },
 
-    return {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        features: product.features,
-        dimensions: product.dimensions,
-        quantity: product.quantity,
-        isActive: product.isActive,
-        category: {name: product.Category?.name as string, id: product.Category?.id as number},
-        images: product.Image,
-    }
+  });
+
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  return {
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    features: product.features,
+    dimensions: product.dimensions,
+    quantity: product.quantity,
+    isActive: product.isActive,
+    category: { name: product.Category?.name as string, id: product.Category?.id as number },
+    images: product.Image,
+  }
 };
 
 export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
-    const productWithSameName = await prisma.product.findFirst({
-        where: {
-            name: product.name
-        }
-    });
+  const supabaseServer = await supabaseServerComponentClient();
 
-    if (productWithSameName) {
-        throw new Error("Product with this name already exists");
+  const {
+    data: { user },
+  } = await supabaseServer.auth.getUser();
+
+  if (!user) {
+    throw new Error("You need to be signed in to perform this action");
+  }
+
+  const getUser = await prisma.user.findUnique({
+    where: {
+      id: user?.id,
+    },
+  });
+
+
+  const isAdmin = getUser?.role === "ADMIN";
+
+  if (!isAdmin) {
+    throw new Error("You need to be an admin to perform this action");
+  }
+
+  const productWithSameName = await prisma.product.findFirst({
+    where: {
+      name: product.name
     }
+  });
 
-    const category = await prisma.category.findFirst({
-        where: {
-            name: product.category
-        }
-    });
+  if (productWithSameName) {
+    throw new Error("Product with this name already exists");
+  }
 
-     await prisma.product.create({
-        data: {
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            features: product.features,
-            dimensions: product.dimensions,
-            quantity: product.quantity,
-          Category: {
-            connectOrCreate: {
-              where: {
-                id: category?.id,
-                name: product.category,
-              },
-              create: {
-                name: product.category,
-              },
-            },
+  const category = await prisma.category.findFirst({
+    where: {
+      name: product.category
+    }
+  });
+
+  await prisma.product.create({
+    data: {
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      features: product.features,
+      dimensions: product.dimensions,
+      quantity: product.quantity,
+      Category: {
+        connectOrCreate: {
+          where: {
+            id: category?.id,
+            name: product.category,
+          },
+          create: {
+            name: product.category,
           },
         },
-      
-      })
-      
+      },
+    },
 
-      revalidatePath("/dashboard/products");
-   
-            
+  })
+
+
+  revalidatePath("/dashboard/products");
+
+
 }
 
-export const uploadImages = async (imagePath:string, productId: number) => {
+export const uploadImages = async (imagePath: string, productId: number) => {
+  const supabaseServer = await supabaseServerComponentClient();
+
+  const {
+    data: { user },
+  } = await supabaseServer.auth.getUser();
+
+  if (!user) {
+    throw new Error("You need to be signed in to perform this action");
+  }
+
+  const getUser = await prisma.user.findUnique({
+    where: {
+      id: user?.id,
+    },
+  });
+
+
+  const isAdmin = getUser?.role === "ADMIN";
+
+  if (!isAdmin) {
+    throw new Error("You need to be an admin to perform this action");
+  }
+
   if (!imagePath) {
     throw new Error("No images provided");
   }
@@ -168,11 +214,9 @@ export const uploadImages = async (imagePath:string, productId: number) => {
     throw new Error("Product not found");
   }
 
-  const supabaseServer = await supabaseServerComponentClient();
-
-  const { data } =  supabaseServer.storage
-  .from("products")
-  .getPublicUrl(imagePath);
+  const { data } = supabaseServer.storage
+    .from("products")
+    .getPublicUrl(imagePath);
 
   if (!data) {
     throw new Error("No image found");
@@ -191,11 +235,34 @@ export const uploadImages = async (imagePath:string, productId: number) => {
 
   revalidatePath("/dashboard/products");
 
-  
+
 };
 
 
 export const updateActiveStatus = async (id: number, isActive: boolean) => {
+  const supabaseServer = await supabaseServerComponentClient();
+
+  const {
+    data: { user },
+  } = await supabaseServer.auth.getUser();
+
+  if (!user) {
+    throw new Error("You need to be signed in to perform this action");
+  }
+
+  const getUser = await prisma.user.findUnique({
+    where: {
+      id: user?.id,
+    },
+  });
+
+
+  const isAdmin = getUser?.role === "ADMIN";
+
+  if (!isAdmin) {
+    throw new Error("You need to be an admin to perform this action");
+  }
+
   if (!id || isNaN(id)) {
     throw new Error("Could not find product");
   }
@@ -223,6 +290,29 @@ export const updateActiveStatus = async (id: number, isActive: boolean) => {
 };
 
 export const updateProduct = async (product: z.infer<typeof updateProductSchema>) => {
+  const supabaseServer = await supabaseServerComponentClient();
+
+  const {
+    data: { user },
+  } = await supabaseServer.auth.getUser();
+
+  if (!user) {
+    throw new Error("You need to be signed in to perform this action");
+  }
+
+  const getUser = await prisma.user.findUnique({
+    where: {
+      id: user?.id,
+    },
+  });
+
+
+  const isAdmin = getUser?.role === "ADMIN";
+
+  if (!isAdmin) {
+    throw new Error("You need to be an admin to perform this action");
+  }
+
   if (!product) {
     throw new Error("No product provided");
   }
@@ -234,7 +324,7 @@ export const updateProduct = async (product: z.infer<typeof updateProductSchema>
     where: {
       id: product.id,
     },
-  }); 
+  });
 
   if (!getProduct) {
     throw new Error("Product not found");
@@ -242,14 +332,14 @@ export const updateProduct = async (product: z.infer<typeof updateProductSchema>
 
   const category = await prisma.category.findFirst({
     where: {
-        name: product.category.name
+      name: product.category.name
     }
   });
 
   await prisma.product.update({
     where: {
       id: product.id,
-    },  
+    },
     data: {
       name: product.name,
       description: product.description,
