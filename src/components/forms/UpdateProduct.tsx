@@ -22,7 +22,7 @@ import { Textarea } from "../ui/textarea";
 import Loader from "../Loader";
 
 import { Switch } from "@/components/ui/switch";
-import { updateProduct } from "@/app/_actions/products";
+import { deleteProduct, updateProduct } from "@/app/_actions/products";
 import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
@@ -59,6 +59,22 @@ function UpdateProduct({ product }: Props) {
       isActive: product.isActive,
     },
   });
+
+  const handleDelete = () => {
+    startTransition(async () => {
+      try {
+        await deleteProduct(product.id);
+        toast({
+          description: "Product deleted successfully",
+        });
+      } catch (e) {
+        toast({
+          variant: "destructive",
+          description: "error deleting product",
+        });
+      }
+    });
+  };
 
   const onSubmit = (values: FormValues) => {
     startTransition(async () => {
@@ -199,12 +215,23 @@ function UpdateProduct({ product }: Props) {
             </FormItem>
           )}
         />
-        <Button
-          className="bg-primaryGreen text-white hover:bg-primaryGreen/60"
-          disabled={isPending}
-        >
-          {isPending ? <Loader /> : "Submit"}
-        </Button>
+        <div className="flex space-x-4">
+          <Button
+            type="button"
+            onClick={handleDelete}
+            className="bg-red-500 text-white"
+            disabled={isPending}
+          >
+            {isPending ? <Loader /> : "Delete"}
+          </Button>
+          <Button
+            type="submit"
+            className="bg-primaryGreen text-white hover:bg-primaryGreen/60"
+            disabled={isPending}
+          >
+            {isPending ? <Loader /> : "Submit"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
