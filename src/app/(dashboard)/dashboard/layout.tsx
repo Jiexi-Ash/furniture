@@ -1,4 +1,5 @@
 import AdminNavbar from "@/components/dashboard/AdminNavbar";
+import { prisma } from "@/lib/prisma";
 import supabaseServerComponentClient from "@/lib/supabaseServer";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -15,10 +16,27 @@ export default async function RootLayout({
 }) {
   const supabase = await supabaseServerComponentClient();
 
-  const user = supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const getUser = await prisma.user.findUnique({
+      where: {
+        id: user?.id,
+      },
+      select: {
+        role: true,
+      },
+    });
+
+    if (getUser?.role !== "ADMIN") {
+      redirect("/");
+    }
+  }
 
   if (!user) {
-    redirect("/");
+    redirect("/sign-in");
   }
 
   return (
