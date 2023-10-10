@@ -364,3 +364,35 @@ export const updateProduct = async (product: z.infer<typeof updateProductSchema>
 
   revalidatePath("/dashboard/products");
 }
+
+export const deleteProduct = async (id: number) => {
+  const supabaseServer = await supabaseServerComponentClient();
+
+  const {
+    data: { user },
+  } = await supabaseServer.auth.getUser();
+
+  if (!user) {
+    throw new Error("You need to be signed in to perform this action");
+  }
+
+  const getUser = await prisma.user.findUnique({
+    where: {
+      id: user?.id,
+    },
+  });
+
+  const isAdmin = getUser?.role === "ADMIN";
+
+  if (!isAdmin) {
+    throw new Error("You need to be an admin to perform this action");
+  }
+
+   await prisma.product.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  revalidatePath("/dashboard/products");
+}
