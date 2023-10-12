@@ -17,6 +17,7 @@ import { Separator } from "../ui/separator";
 import CartItem from "./CartItem";
 import { ScrollArea } from "../ui/scroll-area";
 import { getCartItems, deleteCartItem } from "@/app/_actions/cart";
+import CheckoutBtn from "./CheckoutBtn";
 
 export default async function UserCart() {
   const cart = await getCartItems();
@@ -28,6 +29,7 @@ export default async function UserCart() {
   const cartItemsCount = cart.reduce((acc, item) => {
     return acc + item.userQuantity!;
   }, 0);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -72,9 +74,7 @@ export default async function UserCart() {
               <p className="text-sm font-bold">Total Price</p>
               <p className="text-sm font-bold">R{totalAmount.toFixed(2)}</p>
             </div>
-            <Button className="mt-4 w-full bg-primaryGreen">
-              Proceed to Checkout
-            </Button>
+            <CheckoutBtn />
           </div>
         </div>
       </SheetContent>
