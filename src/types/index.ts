@@ -1,4 +1,4 @@
-import type { Category, Image, Product } from "@prisma/client";
+import type { Category, Image, Product, Cart } from "@prisma/client";
 
 type NavItem = {
     title: string;
@@ -24,3 +24,12 @@ export interface ProductItems extends Pick<Product, 'id' | 'name' | 'price' | 'q
     }
 
 }
+
+export interface UserCart extends Pick<Cart, 'id' | 'userId' > {
+    items: {
+        id: number;
+        productId: number;
+        quantity: number;
+    }[]
+}
+   

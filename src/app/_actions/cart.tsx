@@ -7,7 +7,7 @@ import type {
   deletCartItemSchema,
   increaseQuantitySchema,
 } from "@/lib/validations";
-import type { CartItems } from "@/types";
+import type { CartItems, UserCart } from "@/types";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { type z } from "zod";
@@ -15,58 +15,12 @@ import { type z } from "zod";
 export const addToCart = async (
   productDetails: z.infer<typeof cartItemSchema>
 ) => {
-  const cookieList = cookies();
+  const cart = (await getCart()) ?? (await createCart());
 
-  const cartId = cookieList.get("cartId")?.value;
-
-  if (!cartId) {
-    const cart = await createCart();
-
-    await prisma.cart.update({
-      where: {
-        id: cart.id,
-      },
-      data: {
-        items: {
-          create: {
-            quantity: productDetails.quantity,
-            Product: {
-              connect: {
-                id: productDetails.productId,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    cookieList.set("cartId", cart.id);
-
-    revalidatePath("/");
-    return;
-  }
-
-  const cart = await prisma.cart.findUnique({
-    where: {
-      id: cartId,
-    },
-    include: {
-      items: true,
-    },
-  });
-
-  if (!cart) {
-    cookieList.set({
-      name: "cartId",
-      value: "",
-      expires: new Date(0),
-    });
-
-    throw new Error("Cart not found");
-  }
+  console.log(cart);
 
   const cartItem = cart.items.find(
-    (item) => item.productId === productDetails.productId
+    (item) => item.id === productDetails.productId
   );
 
   if (cartItem) {
@@ -340,6 +294,7 @@ export const decreaseCartItem = async (
 };
 
 export const createCart = async () => {
+  console.log("creating cart");
   const supabase = await supabaseServerComponentClient();
   const cookieList = cookies();
 
@@ -352,15 +307,109 @@ export const createCart = async () => {
       data: {
         userId: user.id,
       },
+      include: {
+        items: true,
+      },
     });
 
+    console.log(cart);
+
     cookieList.set("cartId", cart.id);
-    return cart;
+
+    const cartItems = cart?.items.map((item) => ({
+      id: item.id,
+      productId: item.productId,
+      quantity: item.quantity,
+    }));
+
+    return {
+      id: cart?.id ?? "",
+      userId: cart?.userId ?? "",
+      items: cartItems ?? [],
+    };
   } else {
     const cart = await prisma.cart.create({
       data: {},
+      include: {
+        items: true,
+      },
     });
+    console.log(cart);
     cookieList.set("cartId", cart.id);
-    return cart;
+
+    const cartItems = cart?.items.map((item) => ({
+      id: item.id,
+      productId: item.productId,
+      quantity: item.quantity,
+    }));
+
+    return {
+      id: cart?.id ?? "",
+      userId: cart?.userId ?? "",
+      items: cartItems ?? [],
+    };
+  }
+};
+
+export const getCart = async (): Promise<UserCart | null> => {
+  console.log("getting cart");
+  const supabase = await supabaseServerComponentClient();
+  const cookieList = cookies();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const cart = await prisma.cart.findFirst({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        items: true,
+      },
+    });
+
+    if (cart) {
+      const cartItems = cart?.items.map((item) => ({
+        id: item.id,
+        productId: item.productId,
+        quantity: item.quantity,
+      }));
+
+      return {
+        id: cart?.id ?? "",
+        userId: cart?.userId ?? "",
+        items: cartItems ?? [],
+      };
+    }
+    return null;
+  } else {
+    const cartId = cookieList.get("cartId")?.value;
+
+    const cart = cartId
+      ? await prisma.cart.findUnique({
+          where: {
+            id: cartId,
+          },
+          include: {
+            items: true,
+          },
+        })
+      : null;
+
+    if (!cart) return null;
+
+    const cartItems = cart?.items.map((item) => ({
+      id: item.id,
+      productId: item.productId,
+      quantity: item.quantity,
+    }));
+
+    return {
+      id: cart?.id ?? "",
+      userId: cart?.userId ?? "",
+      items: cartItems ?? [],
+    };
   }
 };
