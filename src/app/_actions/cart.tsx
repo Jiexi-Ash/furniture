@@ -169,43 +169,43 @@ export const deleteCartItem = async (
         },
       },
     });
-  }
+  } else {
+    const cartId = cookieList.get("cartId")?.value;
 
-  const cartId = cookieList.get("cartId")?.value;
+    if (!cartId) {
+      throw new Error("Cart not found");
+    }
 
-  if (!cartId) {
-    throw new Error("Cart not found");
-  }
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+      include: {
+        items: true,
+      },
+    });
 
-  const cart = await prisma.cart.findUnique({
-    where: {
-      id: cartId,
-    },
-    include: {
-      items: true,
-    },
-  });
+    if (!cart) return;
 
-  if (!cart) return;
+    cart.items =
+      cart.items.filter(
+        (item) => Number(item.productId) !== Number(input.productId)
+      ) ?? [];
 
-  cart.items =
-    cart.items.filter(
-      (item) => Number(item.productId) !== Number(input.productId)
-    ) ?? [];
-
-  //  delete cart item
-  await prisma.cart.update({
-    where: {
-      id: cart.id,
-    },
-    data: {
-      items: {
-        deleteMany: {
-          productId: Number(input.productId),
+    //  delete cart item
+    await prisma.cart.update({
+      where: {
+        id: cart.id,
+      },
+      data: {
+        items: {
+          deleteMany: {
+            productId: Number(input.productId),
+          },
         },
       },
-    },
-  });
+    });
+  }
 
   revalidatePath("/");
 };
