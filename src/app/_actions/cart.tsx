@@ -140,7 +140,36 @@ export async function getCartItems(): Promise<CartItems[]> {
 export const deleteCartItem = async (
   input: z.infer<typeof deletCartItemSchema>
 ) => {
+  console.log("deleting cart item");
+  const supabase = await supabaseServerComponentClient();
   const cookieList = cookies();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const cart = await getCart();
+
+    cart?.items.filter(
+      (item) => Number(item.productId) !== Number(input.productId)
+    );
+
+    //  delete cart item
+
+    await prisma.cart.update({
+      where: {
+        id: cart?.id,
+      },
+      data: {
+        items: {
+          deleteMany: {
+            productId: Number(input.productId),
+          },
+        },
+      },
+    });
+  }
 
   const cartId = cookieList.get("cartId")?.value;
 
