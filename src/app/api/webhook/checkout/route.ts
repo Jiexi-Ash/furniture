@@ -4,6 +4,8 @@ import * as crypto from "crypto"
 
 const secret = process.env.YOCO_WEBHOOK_SECRET
 export async function POST(req: NextRequest, res: NextResponse) {
+    const { uniqueIds } = await req.json()
+    console.log(uniqueIds)
      // get raw body
     const body = await req.text()
     const id = headers().get("webhook-id")

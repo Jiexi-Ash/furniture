@@ -21,6 +21,7 @@ import CheckoutBtn from "./CheckoutBtn";
 
 export default async function UserCart() {
   const cart = await getCartItems();
+  console.log(cart);
 
   const totalAmount = cart.reduce((acc, item) => {
     return acc + item.price * item.userQuantity!;

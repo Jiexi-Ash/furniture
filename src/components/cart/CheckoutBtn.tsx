@@ -2,13 +2,15 @@
 import React from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
+import { CartItem } from "@prisma/client";
+import { CartItems } from "@/types";
 
 function CheckoutBtn() {
   const handleCheckout = async () => {
     try {
-      const reponse = await axios.post("/api/checkout");
+      const { data } = await axios.post("/api/checkout");
       //  redirect to url
-      window.location.href = reponse.data.url;
+      window.location.href = data.url;
     } catch (error) {
       console.log(error);
     }
