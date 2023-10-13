@@ -24,10 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={merriweather.className}>
-        {children}
-        <Toaster />
-      </body>
+      <AuthProvider>
+        <body className={merriweather.className}>
+          {children}
+          <Toaster />
+        </body>
+      </AuthProvider>
     </html>
   );
 }
