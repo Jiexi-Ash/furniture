@@ -20,7 +20,12 @@ export const addToCart = async (
   const cartId = cookieList.get("cartId")?.value;
 
   if (!cartId) {
-    const cart = await prisma.cart.create({
+    const cart = await createCart();
+
+    await prisma.cart.update({
+      where: {
+        id: cart.id,
+      },
       data: {
         items: {
           create: {
@@ -343,17 +348,6 @@ export const createCart = async () => {
   } = await supabase.auth.getUser();
 
   if (user) {
-    const hasCart = await prisma.cart.findFirst({
-      where: {
-        userId: user.id,
-      },
-    });
-
-    if (hasCart) {
-      cookieList.set("cartId", hasCart.id);
-      return;
-    }
-
     const cart = await prisma.cart.create({
       data: {
         userId: user.id,
@@ -361,12 +355,12 @@ export const createCart = async () => {
     });
 
     cookieList.set("cartId", cart.id);
-    return;
+    return cart;
   } else {
     const cart = await prisma.cart.create({
       data: {},
     });
     cookieList.set("cartId", cart.id);
-    return;
+    return cart;
   }
 };
