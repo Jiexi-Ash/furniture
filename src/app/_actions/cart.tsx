@@ -139,22 +139,24 @@ export async function getCartItems(): Promise<CartItems[]> {
   } else {
     const cartId = cookieList.get("cartId")?.value;
 
-    const cart = await prisma.cart.findUnique({
-      where: {
-        id: cartId,
-      },
-      include: {
-        items: {
+    const cart = cartId
+      ? await prisma.cart.findUnique({
+          where: {
+            id: cartId,
+          },
           include: {
-            Product: {
+            items: {
               include: {
-                Image: true,
+                Product: {
+                  include: {
+                    Image: true,
+                  },
+                },
               },
             },
           },
-        },
-      },
-    });
+        })
+      : null;
 
     if (!cart) return [];
   }

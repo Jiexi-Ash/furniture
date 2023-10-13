@@ -8,7 +8,7 @@ type props = {
   children: React.ReactNode;
 };
 
-function RouteGuard({ children }: props) {
+function AuthProvider({ children }: props) {
   const { setSession, setUser } = useUserStore();
 
   useEffect(() => {
@@ -28,6 +28,7 @@ function RouteGuard({ children }: props) {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN") {
+          console.log("SIGNED_IN");
           setSession(session);
           setUser(session?.user as User);
         }
@@ -48,4 +49,4 @@ function RouteGuard({ children }: props) {
   return <>{children}</>;
 }
 
-export default RouteGuard;
+export default AuthProvider;
