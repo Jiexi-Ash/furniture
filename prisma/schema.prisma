@@ -64,6 +64,7 @@ model user {
   createdAt DateTime @default(now())
   email     String   @unique
   role      Role     @default(USER)
+  Cart      Cart[]
 }
 
 model Cart {
@@ -71,6 +72,8 @@ model Cart {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   items     CartItem[]
+  userId    String?
+  User      user?      @relation(fields: [userId], references: [id])
 }
 
 model CartItem {

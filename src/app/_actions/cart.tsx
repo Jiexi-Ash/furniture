@@ -110,33 +110,59 @@ export const addToCart = async (
 
 export async function getCartItems(): Promise<CartItems[]> {
   const cookieList = cookies();
+  const supabase = await supabaseServerComponentClient();
 
-  const cartId = cookieList.get("cartId")?.value;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!cartId) {
-    return [];
-  }
+  let cart = null;
 
-  const cart = await prisma.cart.findUnique({
-    where: {
-      id: cartId,
-    },
-    include: {
-      items: {
-        include: {
-          Product: {
-            include: {
-              Image: true,
+  if (user) {
+    // find user cart
+    cart = await prisma.cart.findFirst({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        items: {
+          include: {
+            Product: {
+              include: {
+                Image: true,
+              },
             },
           },
         },
       },
-    },
-  });
+    });
+  } else {
+    const cartId = cookieList.get("cartId")?.value;
+
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+      include: {
+        items: {
+          include: {
+            Product: {
+              include: {
+                Image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!cart) return [];
+  }
+
+  //  get product and quantity
 
   if (!cart) return [];
 
-  //  get product and quantity
   const cartItems = cart.items.map((item) => ({
     itemId: item.id,
     id: item.Product.id,
@@ -304,4 +330,29 @@ export const decreaseCartItem = async (
   });
 
   revalidatePath("/");
+};
+
+export const createCart = async () => {
+  const supabase = await supabaseServerComponentClient();
+  const cookieList = cookies();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const cart = await prisma.cart.create({
+      data: {
+        userId: user.id,
+      },
+    });
+
+    cookieList.set("cartId", cart.id);
+  } else {
+    const cart = await prisma.cart.create({
+      data: {},
+    });
+
+    cookieList.set("cartId", cart.id);
+  }
 };
