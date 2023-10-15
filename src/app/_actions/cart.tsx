@@ -477,10 +477,6 @@ export const createCart = async () => {
       },
     });
 
-    console.log(cart);
-
-    cookieList.set("cartId", cart.id);
-
     const cartItems = cart?.items.map((item) => ({
       id: item.id,
       productId: item.productId,
@@ -499,7 +495,6 @@ export const createCart = async () => {
         items: true,
       },
     });
-    console.log(cart);
     cookieList.set("cartId", cart.id);
 
     const cartItems = cart?.items.map((item) => ({
