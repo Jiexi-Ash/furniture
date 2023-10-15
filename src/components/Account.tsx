@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 import {
@@ -13,21 +14,17 @@ import {
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "@/app/(store)/userStore";
-import Link from "next/link";
 import { Button } from "./ui/button";
-import exp from "constants";
-import supabaseServerComponentClient from "@/lib/supabaseServer";
 import SignoutButton from "./SignoutButton";
 import SigninButton from "./SigninButton";
+import { supabase } from "@/lib/supabaseClient";
 
-async function Account() {
-  const supabase = await supabaseServerComponentClient();
-
-  const user = await supabase.auth.getUser();
+function Account() {
+  const { user } = useUserStore();
 
   return (
     <>
-      {user?.data.user ? (
+      {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="hover:cursor-pointer">
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -49,7 +46,7 @@ async function Account() {
             className=" bg-white border border-gray-200 w-64 p-2"
           >
             <DropdownMenuLabel>
-              <div className="text-xs">{user?.data.user?.email}</div>
+              <div className="text-xs">{user?.email}</div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

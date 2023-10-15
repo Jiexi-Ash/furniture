@@ -5,6 +5,7 @@ import { Merriweather } from "next/font/google";
 import Provider from "@/components/Provider";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import AuthProvider from "@/components/AuthProvider";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -23,10 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={merriweather.className}>
-        {children}
-        <Toaster />
-      </body>
+      <AuthProvider>
+        <body className={merriweather.className}>
+          {children}
+          <Toaster />
+        </body>
+      </AuthProvider>
     </html>
   );
 }
