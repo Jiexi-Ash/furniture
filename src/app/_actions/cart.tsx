@@ -598,12 +598,14 @@ export const mergeCartToUser = async (userId: string) => {
 
   await prisma.$transaction(async (tx) => {
     if (userCart) {
+      console.log(userCart);
       const mergedCartItems = mergeCartItems(localCart, userCart).map(
         (item: UserCartItem) => ({
-          productId: item.id,
+          productId: item.productId,
           quantity: item.quantity,
         })
       );
+      console.log(mergedCartItems);
 
       // delete the current cartItems
       await tx.cartItem.deleteMany({
@@ -612,12 +614,18 @@ export const mergeCartToUser = async (userId: string) => {
         },
       });
 
-      await tx.cartItem.createMany({
-        data: mergedCartItems.map((item) => ({
-          cartId: userCart.id,
-          productId: item.productId,
-          quantity: item.quantity,
-        })),
+      await tx.cart.update({
+        where: { id: userCart.id },
+        data: {
+          items: {
+            createMany: {
+              data: mergedCartItems.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+              })),
+            },
+          },
+        },
       });
     } else {
       await tx.cart.create({
@@ -649,6 +657,8 @@ export const mergeCartToUser = async (userId: string) => {
 const mergeCartItems = (localCart: UserCart, userCart: UserCart) => {
   const localCartItems = localCart.items;
   const userCartItems = userCart.items;
+  console.log(localCartItems);
+  console.log(userCartItems);
 
   localCartItems.forEach((localCartItem) => {
     const userCartItem = userCartItems.find(
@@ -661,6 +671,8 @@ const mergeCartItems = (localCart: UserCart, userCart: UserCart) => {
       userCartItems.push(localCartItem);
     }
   });
+
+  console.log(userCartItems);
 
   return userCartItems;
 };

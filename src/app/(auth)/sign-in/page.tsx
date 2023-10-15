@@ -17,10 +17,17 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { supabase } from "@/lib/supabaseClient";
-import { useState } from "react";
+import {
+  startTransition,
+  use,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import Link from "next/link";
 
 import { useToast } from "@/components/ui/use-toast";
+import { mergeCartToUser } from "@/app/_actions/cart";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -30,6 +37,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignInPage() {
+  const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -55,8 +63,22 @@ export default function SignInPage() {
       });
       return;
     }
+
     router.push("/");
   };
+
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_IN") {
+          console.log("SIGNED_IN");
+          startTransition(async () => {
+            await mergeCartToUser(session?.user?.id!);
+          });
+        }
+      }
+    );
+  }, []);
 
   return (
     <div className="mt-8 justify-center w-full flex min-h-[55vh] items-center">
