@@ -5,6 +5,8 @@ import MobileNav from "./MobileNav";
 import NavMenu from "./layout/NavMenu";
 import UserCart from "./cart/UserCart";
 import Account from "./Account";
+import supabaseServerComponentClient from "@/lib/supabaseServer";
+import { useUserStore } from "@/app/(store)/userStore";
 
 function Navbar() {
   return (

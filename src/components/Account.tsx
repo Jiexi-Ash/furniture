@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 
 import {
   DropdownMenu,
@@ -17,10 +16,21 @@ import { useUserStore } from "@/app/(store)/userStore";
 import { Button } from "./ui/button";
 import SignoutButton from "./SignoutButton";
 import SigninButton from "./SigninButton";
-import { supabase } from "@/lib/supabaseClient";
+import { User } from "@supabase/supabase-js";
+import { useState } from "react";
+
+interface AccountProps {
+  user: User | null;
+}
 
 function Account() {
+  const [isUser, setIsUser] = useState(null);
   const { user } = useUserStore();
+  // const supabase = await supabaseServerComponentClient();
+
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
 
   return (
     <>
@@ -35,7 +45,7 @@ function Account() {
                   alt="@shadcn"
                 />
                 <AvatarFallback className="bg-transparent">
-                  {<UserCircleIcon className="h-full  w-full" />}
+                  <UserCircleIcon className="h-full  w-full" />
                 </AvatarFallback>
               </Avatar>
             </Button>
@@ -45,9 +55,7 @@ function Account() {
             forceMount
             className=" bg-white border border-gray-200 w-64 p-2"
           >
-            <DropdownMenuLabel>
-              <div className="text-xs">{user?.email}</div>
-            </DropdownMenuLabel>
+            <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem className="text-sm text-gray-400">

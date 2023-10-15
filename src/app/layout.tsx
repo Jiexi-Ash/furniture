@@ -26,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className={merriweather.className}>
+          <Navbar />
           {children}
           <Toaster />
         </body>

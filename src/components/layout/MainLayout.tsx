@@ -9,7 +9,6 @@ type props = {
 function MainLayout({ children }: props) {
   return (
     <>
-      <Navbar />
       {children}
       <Footer />
     </>
