@@ -28,6 +28,7 @@ import Link from "next/link";
 
 import { useToast } from "@/components/ui/use-toast";
 import { mergeCartToUser } from "@/app/_actions/cart";
+import Loader from "@/components/Loader";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -64,7 +65,7 @@ export default function SignInPage() {
       return;
     }
 
-    router.push("/");
+    router.refresh();
   };
 
   useEffect(() => {
@@ -128,8 +129,9 @@ export default function SignInPage() {
               <Button
                 type="submit"
                 className="bg-primaryGreen text-white w-full hover:bg-primaryGreen/60"
+                disabled={isPending}
               >
-                Sign In
+                {isPending ? <Loader /> : "Sign In"}
               </Button>
             </div>
           </form>
