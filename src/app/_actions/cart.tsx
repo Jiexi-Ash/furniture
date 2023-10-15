@@ -7,7 +7,7 @@ import type {
   deletCartItemSchema,
   increaseQuantitySchema,
 } from "@/lib/validations";
-import type { CartItems, UserCart } from "@/types";
+import type { CartItems, UserCart, UserCartItem } from "@/types";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { type z } from "zod";
@@ -577,4 +577,95 @@ export const getCart = async (): Promise<UserCart | null> => {
       items: cartItems ?? [],
     };
   }
+};
+
+export const mergeCartToUser = async (userId: string) => {
+  const cookieList = cookies();
+  const localCartId = cookieList.get("cartId")?.value;
+
+  if (!localCartId) return;
+
+  const localCart = await prisma.cart.findUnique({
+    where: {
+      id: localCartId,
+    },
+    include: { items: true },
+  });
+
+  if (!localCart) return;
+
+  const userCart = await prisma.cart.findFirst({
+    where: {
+      userId,
+    },
+    include: { items: true },
+  });
+
+  await prisma.$transaction(async (tx) => {
+    if (userCart) {
+      const mergedCartItems = mergeCartItems(localCart, userCart).map(
+        (item: UserCartItem) => ({
+          productId: item.id,
+          quantity: item.quantity,
+        })
+      );
+
+      // delete the current cartItems
+      await tx.cartItem.deleteMany({
+        where: {
+          cartId: userCart.id,
+        },
+      });
+
+      await tx.cartItem.createMany({
+        data: mergedCartItems.map((item) => ({
+          cartId: userCart.id,
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      });
+    } else {
+      await tx.cart.create({
+        data: {
+          userId,
+          items: {
+            createMany: {
+              data: localCart.items.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+              })),
+            },
+          },
+        },
+      });
+    }
+
+    // delete local cart
+    await tx.cart.delete({
+      where: {
+        id: localCart.id,
+      },
+    });
+
+    cookieList.set("cartId", "");
+  });
+};
+
+const mergeCartItems = (localCart: UserCart, userCart: UserCart) => {
+  const localCartItems = localCart.items;
+  const userCartItems = userCart.items;
+
+  localCartItems.forEach((localCartItem) => {
+    const userCartItem = userCartItems.find(
+      (item) => item.productId === localCartItem.productId
+    );
+
+    if (userCartItem) {
+      userCartItem.quantity += localCartItem.quantity;
+    } else {
+      userCartItems.push(localCartItem);
+    }
+  });
+
+  return userCartItems;
 };

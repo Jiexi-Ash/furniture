@@ -32,4 +32,10 @@ export interface UserCart extends Pick<Cart, 'id' | 'userId' > {
         quantity: number;
     }[]
 }
+
+export type UserCartItem = {
+        id: number;
+        productId: number;
+        quantity: number;
+}
    
