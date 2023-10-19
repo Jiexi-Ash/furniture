@@ -30,6 +30,9 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignUp() {
+  // TODO: Add merge cart to user
+  //TODO : Add loading state
+
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
