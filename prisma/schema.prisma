@@ -11,6 +11,7 @@ model Order {
   id        Int         @id @default(autoincrement())
   userId    String
   createdAt DateTime    @default(now())
+  orderKey  String      @unique
   updatedAt DateTime    @updatedAt
   orderDate DateTime    @default(now())
   total     Float       @default(0)
@@ -27,7 +28,6 @@ model OrderItem {
   orderId   Int
   productId Int
   quantity  Int
-  price     Float
   Order     Order    @relation(fields: [orderId], references: [id])
   Product   Product  @relation(fields: [productId], references: [id])
 }
@@ -42,12 +42,12 @@ model Product {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   dimensions  String
-  categoryId  Int?
   OrderItem   OrderItem[]
-  Category    Category?   @relation(fields: [categoryId], references: [id])
   CartItem    CartItem[]
   isActive    Boolean     @default(false)
   Image       Image[]
+  category    category?   @relation(fields: [categoryId], references: [id])
+  categoryId  String?
 }
 
 model Image {
@@ -87,11 +87,10 @@ model CartItem {
   Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
-model Category {
-  id        Int       @id @default(autoincrement())
-  name      String
+model category {
+  id        String    @id @default(uuid())
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  name      String    @unique
   Product   Product[]
 }
 

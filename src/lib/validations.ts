@@ -37,7 +37,7 @@ export const updateProductSchema = z.object({
     name: z.string(),
     description: z.string(),
     price: z.number(),
-    category: z.object({id: z.number(), name: z.string()}),
+    category: z.object({id: z.string(), name: z.string()}),
     features: z.string(),
     dimensions: z.string(),
     quantity: z.number(),

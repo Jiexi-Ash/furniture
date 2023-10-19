@@ -18,7 +18,7 @@ export const getProducts = async (): Promise<ProductItems[]> => {
     },
     include: {
       Image: true,
-      Category: true
+      category: true
     },
 
   });
@@ -34,7 +34,7 @@ export const getProducts = async (): Promise<ProductItems[]> => {
       dimensions: product.dimensions,
       quantity: product.quantity,
       isActive: product.isActive,
-      category: { name: product.Category?.name as string, id: product.Category?.id as number },
+      category: { name: product.category?.name as string, id: product.category?.id as string },
       images: product.Image,
     }
   });
@@ -45,7 +45,7 @@ export const getAllProducts = async (): Promise<ProductItems[]> => {
   const products = await prisma.product.findMany({
     include: {
       Image: true,
-      Category: true
+      category: true
     },
 
   });
@@ -61,7 +61,7 @@ export const getAllProducts = async (): Promise<ProductItems[]> => {
       dimensions: product.dimensions,
       quantity: product.quantity,
       isActive: product.isActive,
-      category: { name: product.Category?.name as string, id: product.Category?.id as number },
+      category: { name: product.category?.name as string, id: product.category?.id as string },
       images: product.Image,
     }
   });
@@ -81,7 +81,7 @@ export const getProduct = async (id: number): Promise<ProductItems> => {
     },
     include: {
       Image: true,
-      Category: true
+      category: true
     },
 
   });
@@ -99,7 +99,7 @@ export const getProduct = async (id: number): Promise<ProductItems> => {
     dimensions: product.dimensions,
     quantity: product.quantity,
     isActive: product.isActive,
-    category: { name: product.Category?.name as string, id: product.Category?.id as number },
+    category: { name: product.category?.name as string, id: product.category?.id as string },
     images: product.Image,
   }
 };
@@ -152,13 +152,12 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
       features: product.features,
       dimensions: product.dimensions,
       quantity: product.quantity,
-      Category: {
+      category: {
         connectOrCreate: {
-          where: {
-            id: category?.id,
+          create: {
             name: product.category,
           },
-          create: {
+          where: {
             name: product.category,
           },
         },
@@ -306,6 +305,8 @@ export const updateProduct = async (product: z.infer<typeof updateProductSchema>
     },
   });
 
+  console.log(getUser);
+
 
   const isAdmin = getUser?.role === "ADMIN";
 
@@ -347,7 +348,7 @@ export const updateProduct = async (product: z.infer<typeof updateProductSchema>
       features: product.features,
       dimensions: product.dimensions,
       quantity: product.quantity,
-      Category: {
+      category: {
         connectOrCreate: {
           where: {
             id: category?.id,
