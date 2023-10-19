@@ -23,13 +23,17 @@ export default async function UserCart() {
   const cart = await getCartItems();
   console.log(cart);
 
-  const totalAmount = cart.reduce((acc, item) => {
+  const subtotalAmount = cart.reduce((acc, item) => {
     return acc + item.price * item.userQuantity!;
   }, 0);
+
+  const totalTax = subtotalAmount * 0.15;
 
   const cartItemsCount = cart.reduce((acc, item) => {
     return acc + item.userQuantity!;
   }, 0);
+
+  const totalAmount = subtotalAmount + totalTax;
 
   return (
     <Sheet>
@@ -61,18 +65,24 @@ export default async function UserCart() {
             </div>
           </ScrollArea>
           <Separator className="my-2" />
-          <div className="mt-4 flex w-full flex-col">
+          <div className="mt-4 flex w-full flex-col space-y-2">
             <div className="w-full flex justify-between items-center">
               <p className="text-sm font-bold">Shipping fee</p>
-              <p className="text-sm">R{100.0}</p>
+              <p className="text-[12px]">calculated on next step</p>
             </div>
             <div className="w-full flex justify-between items-center">
-              <p className="text-sm font-bold">Taxes</p>
-              <p className="text-sm">R{40.0}</p>
+              <p className="text-sm font-bold">Subtotal</p>
+              <p className="text-sm font-bold">R{subtotalAmount.toFixed(2)}</p>
             </div>
             <Separator className="my-2" />
-            <div className="w-full flex justify-between items-center">
-              <p className="text-sm font-bold">Total Price</p>
+
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col gap-[1px]">
+                <p className="text-sm font-bold">Total Price</p>
+                <p className="text-slate-400 text-[10px]">
+                  {`incl. R${totalTax.toFixed(2)} in taxes`}
+                </p>
+              </div>
               <p className="text-sm font-bold">R{totalAmount.toFixed(2)}</p>
             </div>
             <CheckoutBtn />
