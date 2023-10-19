@@ -105,6 +105,11 @@ export async function POST(request: NextRequest) {
 
     }, { headers: headers })
 
+    await prisma.cart.delete({
+        where: {
+            id: cart.id,
+        },
+    })
     //   return to the client
     return NextResponse.json({
         url: reponse.data.redirectUrl,
