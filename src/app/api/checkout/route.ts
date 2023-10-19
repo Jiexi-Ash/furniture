@@ -99,9 +99,9 @@ export async function POST(request: NextRequest) {
 
     const reponse = await axios.post(postUrl, {
         amount: convertToCents(totalAmount),
-        currency: "ZAR",
-        cancelUrl: "https://6a8d-2c0f-f4c0-10b0-2970-2d1c-7794-36d0-86f3.ngrok-free.app/cancel",
-        successUrl: "https://6a8d-2c0f-f4c0-10b0-2970-2d1c-7794-36d0-86f3.ngrok-free.app/checkout?succes=1",
+        currency: process.env.PAYMENT_CURRENCY,
+        cancelUrl: `${process.env.DOMAIN_URL}/checkout?cancel=1`,
+        successUrl: `${process.env.DOMAIN_URL}/checkout?succes=1`,
 
     }, { headers: headers })
 
