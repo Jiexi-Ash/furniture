@@ -43,3 +43,15 @@ export const updateProductSchema = z.object({
     quantity: z.number(),
     isActive: z.boolean(),
 })
+
+export const shippingSchema = z.object({
+    country: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
+    address: z.string(),
+    complexOrApartment: z.string().optional(),
+    city: z.string(),
+    province: z.string(),
+    postCode: z.coerce.number(),
+    phone: z.coerce.number(),
+    });

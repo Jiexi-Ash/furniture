@@ -34,6 +34,7 @@ import {
   SelectContent,
   SelectTrigger,
 } from "../ui/select";
+import { addShippingAddress } from "@/app/_actions/user";
 
 enum Province {
   Gauteng = "Gauteng",
@@ -55,7 +56,7 @@ const formSchema = z.object({
   complexOrApartment: z.string().optional(),
   city: z.string().min(3, "City must be at least 3 characters long"),
   province: z.string().min(3, "Province must be at least 3 characters long"),
-  postalCode: z.coerce.number().max(4, "Postal Code must be 4 digits long"),
+  postalCode: z.coerce.number().min(4, "Postal Code must be 4 digits long"),
   phoneNumber: z.coerce.number(),
 });
 
@@ -69,7 +70,7 @@ function ShippingDetails() {
       firstName: "",
       lastName: "",
       address: "",
-      complexOrApartment: "",
+      complexOrApartment: "test",
       city: "",
       province: "Gauteng",
       postalCode: 0,
@@ -78,7 +79,44 @@ function ShippingDetails() {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const {
+      country,
+      firstName,
+      lastName,
+      address,
+      complexOrApartment,
+      city,
+      province,
+      postalCode,
+      phoneNumber,
+    } = values;
+
+    startTransition(async () => {
+      try {
+        await addShippingAddress({
+          country,
+          firstName,
+          lastName,
+          address,
+          complexOrApartment: complexOrApartment ?? "",
+          city,
+          province,
+          postCode: postalCode,
+          phone: phoneNumber,
+        });
+
+        toast({
+          title: "Success",
+          description: "Shipping address added successfully",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          variant: "destructive",
+          description: error.message,
+        });
+      }
+    });
   };
   return (
     <div className="px-6 py-6">
