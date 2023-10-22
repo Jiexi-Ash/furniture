@@ -71,7 +71,11 @@ async function SuccessPage() {
           <div className="mt-4 flex w-full flex-col space-y-2">
             <div className="w-full flex justify-between items-center">
               <p className="text-sm font-bold">Shipping fee</p>
-              <p className="text-[12px]">R{shippingFee?.toFixed(2)}</p>
+              <p className="text-[12px]">
+                {ShippingDetails !== null && cart.length > 0
+                  ? `R${shippingFee?.toFixed(2)}`
+                  : "calculated on next step"}
+              </p>
             </div>
             <div className="w-full flex justify-between items-center">
               <p className="text-sm font-bold">Subtotal</p>
@@ -85,11 +89,15 @@ async function SuccessPage() {
                   {`incl. R${totalTax.toFixed(2)} in taxes`}
                 </p>
               </div>
-              <p className="text-sm font-bold">R{totalAmount.toFixed(2)}</p>
+              <p className="text-sm font-bold">
+                {shippingDetails !== null && cart.length > 0
+                  ? `R${totalAmount.toFixed(2)}`
+                  : "R0.00"}
+              </p>
             </div>
           </div>
           <div className="flex justify-end w-full">
-            <PaymentBtn />
+            {shippingDetails !== null && cart.length > 0 && <PaymentBtn />}
           </div>
         </div>
       </div>
