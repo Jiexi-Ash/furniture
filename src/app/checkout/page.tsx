@@ -8,6 +8,8 @@ import ShippingDetails from "@/components/forms/ShippingDetails";
 import { getShippingAddress } from "../_actions/user";
 import { supabase } from "@/lib/supabaseClient";
 import PaymentBtn from "@/components/checkout/PaymentBtn";
+import { calculateSizeAdjustValues } from "next/dist/server/font-utils";
+import { calculateShippingCost } from "@/lib/helpers";
 
 async function SuccessPage() {
   const cart = await getCartItems();
@@ -24,7 +26,12 @@ async function SuccessPage() {
     return acc + item.userQuantity!;
   }, 0);
 
-  const totalAmount = subtotalAmount + totalTax;
+  const shippingFee = shippingDetails
+    ? calculateShippingCost(subtotalAmount, shippingDetails?.province!)
+    : 0;
+  const totalAmount = shippingFee
+    ? subtotalAmount + totalTax + shippingFee
+    : subtotalAmount + totalTax;
 
   return (
     <div className="w-full h-screen flex flex-col mx-auto container mt-20">
@@ -64,7 +71,7 @@ async function SuccessPage() {
           <div className="mt-4 flex w-full flex-col space-y-2">
             <div className="w-full flex justify-between items-center">
               <p className="text-sm font-bold">Shipping fee</p>
-              <p className="text-[12px]">calculated on next step</p>
+              <p className="text-[12px]">R{shippingFee?.toFixed(2)}</p>
             </div>
             <div className="w-full flex justify-between items-center">
               <p className="text-sm font-bold">Subtotal</p>
