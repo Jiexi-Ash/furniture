@@ -5,9 +5,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import ShippingDetails from "@/components/forms/ShippingDetails";
+import { getShippingAddress } from "../_actions/user";
+import { supabase } from "@/lib/supabaseClient";
 
 async function SuccessPage() {
   const cart = await getCartItems();
+  const shippingDetails = await getShippingAddress();
+
+  console.log(shippingDetails);
   const subtotalAmount = cart.reduce((acc, item) => {
     return acc + item.price * item.userQuantity!;
   }, 0);
