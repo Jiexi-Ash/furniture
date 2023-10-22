@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import ShippingDetails from "@/components/forms/ShippingDetails";
 import { getShippingAddress } from "../_actions/user";
 import { supabase } from "@/lib/supabaseClient";
+import PaymentBtn from "@/components/checkout/PaymentBtn";
 
 async function SuccessPage() {
   const cart = await getCartItems();
@@ -79,6 +80,9 @@ async function SuccessPage() {
               </div>
               <p className="text-sm font-bold">R{totalAmount.toFixed(2)}</p>
             </div>
+          </div>
+          <div className="flex justify-end w-full">
+            <PaymentBtn />
           </div>
         </div>
       </div>
