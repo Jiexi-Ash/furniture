@@ -18,6 +18,7 @@ import CartItem from "./CartItem";
 import { ScrollArea } from "../ui/scroll-area";
 import { getCartItems, deleteCartItem } from "@/app/_actions/cart";
 import CheckoutBtn from "./CheckoutBtn";
+import Link from "next/link";
 
 export default async function UserCart() {
   const cart = await getCartItems();
@@ -85,7 +86,9 @@ export default async function UserCart() {
               </div>
               <p className="text-sm font-bold">R{totalAmount.toFixed(2)}</p>
             </div>
-            <CheckoutBtn />
+            <Link href="/checkout" className="mt-4 w-full bg-primaryGreen">
+              Proceed to Checkout
+            </Link>
           </div>
         </div>
       </SheetContent>
