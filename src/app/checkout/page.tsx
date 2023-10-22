@@ -39,7 +39,17 @@ async function SuccessPage() {
       <div className="flex items-center justify-between gap-6">
         {/* form */}
         <div className="flex-1 w-full h-full bg-gray-100">
-          <ShippingDetails />
+          <ShippingDetails
+            id={shippingDetails?.id}
+            complexOrApartment={shippingDetails?.complexOrApartment}
+            lastName={shippingDetails?.lastName}
+            firstName={shippingDetails?.firstName}
+            address={shippingDetails?.address}
+            city={shippingDetails?.city}
+            province={shippingDetails?.province}
+            postcode={shippingDetails?.postcode}
+            phone={shippingDetails?.phone}
+          />
         </div>
         <div className="flex-1 flex flex-col w-full h-full">
           <ScrollArea className="h-full py-6">

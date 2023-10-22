@@ -60,21 +60,45 @@ const formSchema = z.object({
   phoneNumber: z.coerce.number(),
 });
 
-function ShippingDetails() {
+interface ShippingDetailsProps {
+  id: string | undefined;
+  country?: string;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
+  complexOrApartment?: string | null | undefined;
+  city?: string;
+  province?: string;
+  postcode?: number;
+  phone?: number;
+}
+
+const ShippingDetails = ({
+  id,
+  country,
+  firstName,
+  lastName,
+  address,
+  complexOrApartment,
+  city,
+  province,
+  postcode,
+  phone,
+}: ShippingDetailsProps) => {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       country: "South Africa",
-      firstName: "",
-      lastName: "",
-      address: "",
-      complexOrApartment: "test",
-      city: "",
-      province: "Gauteng",
-      postalCode: 0,
-      phoneNumber: 0,
+      firstName: firstName ?? "",
+      lastName: lastName ?? "",
+      address: address ?? "",
+      complexOrApartment: complexOrApartment ?? "",
+      city: city ?? "",
+      province: province ?? "",
+      postalCode: postcode ?? 0,
+      phoneNumber: phone ?? 0,
     },
   });
 
@@ -120,7 +144,12 @@ function ShippingDetails() {
   };
   return (
     <div className="px-6 py-6">
-      <h2 className="text-xl py-6">Shipping Details</h2>
+      <div className="flex flex-col py-6 space-y-1">
+        <h2 className="text-xl">Shipping Detailss</h2>
+        <p className="text-[12px] text-red-400">
+          Please verufy your shipping details before you click on pay now
+        </p>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -288,6 +317,6 @@ function ShippingDetails() {
       </Form>
     </div>
   );
-}
+};
 
 export default ShippingDetails;
