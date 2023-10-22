@@ -86,7 +86,10 @@ export default async function UserCart() {
               </div>
               <p className="text-sm font-bold">R{totalAmount.toFixed(2)}</p>
             </div>
-            <Link href="/checkout" className="mt-4 w-full bg-primaryGreen">
+            <Link
+              href="/checkout"
+              className="mt-4 w-full bg-primaryGreen py-4 text-white text-center rounded-md hover:bg-primaryGreen/80"
+            >
               Proceed to Checkout
             </Link>
           </div>
