@@ -8,8 +8,12 @@ import ShippingDetails from "@/components/forms/ShippingDetails";
 import { getShippingAddress } from "../_actions/user";
 import { supabase } from "@/lib/supabaseClient";
 import PaymentBtn from "@/components/checkout/PaymentBtn";
-import { calculateSizeAdjustValues } from "next/dist/server/font-utils";
 import { calculateShippingCost } from "@/lib/helpers";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Checkout",
+};
 
 async function SuccessPage() {
   const cart = await getCartItems();
