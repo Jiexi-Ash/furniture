@@ -1,14 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,10 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "../ui/use-toast";
@@ -35,18 +24,6 @@ import {
   SelectTrigger,
 } from "../ui/select";
 import { addShippingAddress } from "@/app/_actions/user";
-
-enum Province {
-  Gauteng = "Gauteng",
-  WesternCape = "Western Cape",
-  EasternCape = "Eastern Cape",
-  KwaZuluNatal = "KwaZulu Natal",
-  Limpopo = "Limpopo",
-  Mpumalanga = "Mpumalanga",
-  NorthWest = "North West",
-  FreeState = "Free State",
-  NorthernCape = "Northern Cape",
-}
 
 const formSchema = z.object({
   country: z.string().min(3, "Country must be at least 3 characters long"),
@@ -137,7 +114,7 @@ const ShippingDetails = ({
         toast({
           title: "Error",
           variant: "destructive",
-          description: error.message,
+          description: "Something went wrong, please try again",
         });
       }
     });
