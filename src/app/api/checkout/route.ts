@@ -17,6 +17,16 @@ export async function POST(request: NextRequest) {
             throw new Error("You must be logged in to make a payment")
         }
 
+        const shppingDetails = await prisma.shipping.findFirst({
+            where: {
+                userId: user.id,
+            },
+        })
+
+        if (!shppingDetails) {
+            throw new Error("Please provide shipping details")
+        }
+
         // get the cart
         const cart = await prisma.cart.findFirst({
             where: {
@@ -93,6 +103,11 @@ export async function POST(request: NextRequest) {
                 status: "PENDING",
                 orderKey: orderKey,
                 total: totalAmount,
+                shipping: {
+                    connect: {
+                        id: shppingDetails.id,
+                    },
+                },
                 OrderItem: {
                     //    connect to product
                     create: cart.items.map((item) => ({
@@ -123,6 +138,16 @@ export async function POST(request: NextRequest) {
             },
 
         }, { headers: headers })
+
+        // update the order and log checkoutId
+        await prisma.order.update({
+            where: {
+                id: order.id,
+            },
+            data: {
+                checkoutId: reponse.data.metadata.checkoutId,
+            },
+        })
 
         // delete cart
         await prisma.cart.delete({
