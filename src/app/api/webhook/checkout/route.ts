@@ -38,6 +38,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 }
             })
 
+            // check if checkoutId matches
             if (order?.checkoutId === data.payload.metadata.checkoutId) {
                 // update order
                 await prisma.order.update({
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         id: order?.id
                     },
                     data: {
-                        status: "PROCESSING"
+                        status: "PAYMENT_RECEIVED"
                     }
                 })
             }

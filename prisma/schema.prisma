@@ -118,6 +118,7 @@ model shipping {
 enum OrderStatus {
   PENDING
   PROCESSING
+  PAYMENT_RECEIVED
   SHIPPED
   DELIVERED
   CANCELLED
