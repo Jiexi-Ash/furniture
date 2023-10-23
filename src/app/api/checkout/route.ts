@@ -1,9 +1,11 @@
+import { calculateShippingCost } from "@/lib/helpers";
 import { prisma } from "@/lib/prisma";
 import supabaseServerComponentClient from "@/lib/supabaseServer";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 const convertToCents = (amount: number) => amount * 100
+const convertToRand = (amount: number) => amount / 100
 
 export async function POST(request: NextRequest) {
 
@@ -85,9 +87,11 @@ export async function POST(request: NextRequest) {
         // setup headers and data for the request
         const discount = 0
         const totalTaxAmount = totalAmount * 0.15
-        const subTotalAmount = totalAmount + discount + totalTaxAmount
-        const amount = convertToCents(subTotalAmount)
+        const shippingFee = calculateShippingCost(totalAmount, shppingDetails.province) ?? 0
+        const subTotalAmount = totalAmount + discount + totalTaxAmount + shippingFee
+        const amountToBePayed = convertToCents(subTotalAmount)
         const orderKey = crypto.randomUUID()
+        
 
         const headers = {
             "Authorization": `Bearer ${process.env.YOCO_SECRET_KEY}`,
@@ -97,12 +101,13 @@ export async function POST(request: NextRequest) {
         }
 
         // create order
+        const amountInRands = convertToRand(amountToBePayed)
         const order = await prisma.order.create({
             data: {
                 userId: user.id,
                 status: "PENDING",
                 orderKey: orderKey,
-                total: totalAmount,
+                total: amountInRands,
                 shipping: {
                     connect: {
                         id: shppingDetails.id,
@@ -124,7 +129,7 @@ export async function POST(request: NextRequest) {
 
 
         const reponse = await axios.post(`${process.env.YOCO_URL}`, {
-            amount: amount,
+            amount: amountToBePayed,
             currency: process.env.PAYMENT_CURRENCY,
             lineItems: lineItems,
             totalDiscount: discount,
@@ -133,7 +138,7 @@ export async function POST(request: NextRequest) {
             cancelUrl: `${process.env.DOMAIN_URL}/checkout?cancel=1`,
             successUrl: `${process.env.DOMAIN_URL}/checkout?succes=1`,
             failureUrl: `${process.env.DOMAIN_URL}/checkout?failure=1`,
-            metaData: {
+            metadata: {
                 orderId: order.id,
             },
 
