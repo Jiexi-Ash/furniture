@@ -36,6 +36,31 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
             // check if checkoutId matches
             if (order?.checkoutId === data.payload.metadata.checkoutId) {
+                const orderItems = await prisma.orderItem.findMany({
+                    where: {
+                        orderId: order?.id
+                    }
+                })
+
+                // update product quantity
+
+                for (const item of orderItems) {
+                    const product = await prisma.product.findUnique({
+                        where: {
+                            id: item.productId
+                        }
+                    })
+
+                    await prisma.product.update({
+                        where: {
+                            id: product?.id
+                        },
+                        data: {
+                            quantity: product?.quantity! - item.quantity
+                        }
+                    })
+                }
+
                 // update order
                 await prisma.order.update({
                     where: {
