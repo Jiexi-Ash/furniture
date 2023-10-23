@@ -49,21 +49,22 @@ export async function POST(request: NextRequest) {
         }
 
         // compare cart items with product items and check if the product is still available
-        const cartItems = cart.items.map(async (item) => {
-            const isInStock = await prisma.product.findUnique({
+        for (const item of cart.items) {
+            const product = await prisma.product.findUnique({
                 where: {
-                    id: item.productId
+                    id: item.productId,
                 },
-            });
+            })
 
-            if (!isInStock) {
-                throw new Error("One or more products in cart are currently out of stock")
+            if (!product) {
+                throw new Error(`Sorry, ${item.Product.name} is not available at the moment`)
             }
 
-            if (isInStock.quantity > item.quantity) {
-                return item
+            if (product?.quantity! < item.quantity) {
+                throw new Error(`Sorry, ${item.Product.name} is out of stock`)
+                
             }
-        })
+        }
 
 
         // total amount of the cart
@@ -166,10 +167,8 @@ export async function POST(request: NextRequest) {
             id: reponse.data.id,
         })
     } catch (error) {
-        // return error message
-        return NextResponse.json({
-            error: "Something went wrong, please try again"
-        })
+        
+        return  NextResponse.json({ message: error.message }, { status: 500 })
     }
 
 }
