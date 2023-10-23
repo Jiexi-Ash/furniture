@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
             id: reponse.data.id,
         })
     } catch (error) {
-        
+        // @ts-ignore
         return  NextResponse.json({ message: error.message }, { status: 500 })
     }
 
