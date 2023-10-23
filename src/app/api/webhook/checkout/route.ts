@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {headers} from "next/headers"
 import * as crypto from "crypto"
+import { prisma } from "@/lib/prisma";
 
 const secret = process.env.YOCO_WEBHOOK_SECRET
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -25,13 +26,33 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const signature = headers().get('webhook-signature')?.split(' ')[0].split(',')[1]
     console.log(signature)
     if (crypto.timingSafeEqual(Buffer.from(expectedSignature), Buffer.from(signature??""))) {
-        const payload = JSON.parse(body)
-        console.log(payload)
+        const data = JSON.parse(body)
+        console.log(data)
 
-        console.log("match")
+        // check if payment is successful
+        if (data.type === "payment.succeeded") {
+            console.log(data.payload.metadata.checkoutId)
+            const order = await prisma.order.findUnique({
+                where:{
+                    id: data.payload.metadata.orderId
+                }
+            })
+
+            if (order?.checkoutId === data.payload.metadata.checkoutId) {
+                // update order
+                await prisma.order.update({
+                    where: {
+                        id: order?.id
+                    },
+                    data: {
+                        status: "PROCESSING"
+                    }
+                })
+            }
+        }
 
 
-        return NextResponse.json({message: "received"})
+        return new NextResponse(null, {status: 200})
     }
 
     // do not process webhook event
