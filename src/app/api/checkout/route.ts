@@ -117,6 +117,10 @@ export async function POST(request: NextRequest) {
             subtotalAmount: subTotalAmount,
             cancelUrl: `${process.env.DOMAIN_URL}/checkout?cancel=1`,
             successUrl: `${process.env.DOMAIN_URL}/checkout?succes=1`,
+            failureUrl: `${process.env.DOMAIN_URL}/checkout?failure=1`,
+            metaData: {
+                orderId: order.id,
+            },
 
         }, { headers: headers })
 
