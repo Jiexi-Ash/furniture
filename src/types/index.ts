@@ -38,4 +38,12 @@ export type UserCartItem = {
         productId: number;
         quantity: number;
 }
+
+export type LineItems = {
+    displayName: string;
+    quantity: number;
+    pricingDetails: {
+        price: number;
+    }
+}
    

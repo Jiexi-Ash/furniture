@@ -1,6 +1,7 @@
 import { calculateShippingCost } from "@/lib/helpers";
 import { prisma } from "@/lib/prisma";
 import supabaseServerComponentClient from "@/lib/supabaseServer";
+import { LineItems } from "@/types";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
         }, 0)
 
 
-        let lineItems = []
+        let lineItems: LineItems[] = []
 
         cart.items.forEach((item) => {
             lineItems.push({
