@@ -14,6 +14,7 @@ model Order {
   orderKey   String      @unique
   updatedAt  DateTime    @updatedAt
   orderDate  DateTime    @default(now())
+  checkoutId String?
   total      Float       @default(0)
   status     OrderStatus @default(PENDING)
   OrderItem  OrderItem[]
