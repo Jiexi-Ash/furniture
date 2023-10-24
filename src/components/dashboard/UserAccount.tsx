@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabaseClient";
 import { useUserStore } from "@/app/(store)/userStore";
+import Link from "next/link";
 
 function UserAccount() {
   const { user } = useUserStore();
@@ -52,7 +53,7 @@ function UserAccount() {
             Profile
           </DropdownMenuItem>
           <DropdownMenuItem className="text-sm text-gray-400">
-            Orders
+            <Link href="/orders">Orders</Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="text-sm text-gray-400" asChild>
             <button

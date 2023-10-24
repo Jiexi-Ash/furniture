@@ -18,6 +18,7 @@ import SignoutButton from "./SignoutButton";
 import SigninButton from "./SigninButton";
 import { User } from "@supabase/supabase-js";
 import { useState } from "react";
+import Link from "next/link";
 
 interface AccountProps {
   user: User | null;
@@ -62,7 +63,7 @@ function Account() {
                 Profile
               </DropdownMenuItem>
               <DropdownMenuItem className="text-sm text-gray-400">
-                Orders
+                <Link href="/orders">Orders</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="text-sm text-gray-400">
                 <SignoutButton />
