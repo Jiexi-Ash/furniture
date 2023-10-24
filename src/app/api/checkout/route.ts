@@ -137,9 +137,9 @@ export async function POST(request: NextRequest) {
             totalDiscount: discount,
             totalTaxAmount: totalTaxAmount,
             subtotalAmount: subTotalAmount,
-            cancelUrl: `${process.env.DOMAIN_URL}/checkout?cancel=1`,
-            successUrl: `${process.env.DOMAIN_URL}/checkout?succes=1`,
-            failureUrl: `${process.env.DOMAIN_URL}/checkout?failure=1`,
+            cancelUrl: `${process.env.DOMAIN_URL}/orders?cancel=1`,
+            successUrl: `${process.env.DOMAIN_URL}/orders?succes=1`,
+            failureUrl: `${process.env.DOMAIN_URL}/orders?failure=1`,
             metadata: {
                 orderId: order.id,
             },
